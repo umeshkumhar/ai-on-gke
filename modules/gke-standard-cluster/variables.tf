@@ -53,11 +53,15 @@ variable "subnetwork_description" {
   type = string
 }
 
+# variable "network_secondary_ranges" {
+#   type = map(object({
+#     range_name    = string
+#     ip_cidr_range = string
+#   }))
+# }
+
 variable "network_secondary_ranges" {
-  type = map(object({
-    range_name    = string
-    ip_cidr_range = string
-  }))
+  type = map(list(object({ range_name = string, ip_cidr_range = string })))
 }
 
 ## GKE variables

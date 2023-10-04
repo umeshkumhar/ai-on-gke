@@ -1,6 +1,25 @@
 
+# module "gke_autopilot" {
+#   source = "./modules/gke_autopilot"
 
-module "ai-on-gke" {
+#   project_id       = var.project_id
+#   region           = var.region
+#   cluster_name     = var.cluster_name
+#   enable_autopilot = var.enable_autopilot
+# }
+
+
+data "google_client_config" "provider" {}
+
+data "google_container_cluster" "ml_cluster" {
+  name       = var.cluster_name
+  location   = var.region
+  # depends_on = [module.gke_autopilot, module.gke_standard]
+  depends_on = [module.gke_standard]
+  project = var.project
+}
+
+module "gke_standard" {
   count      = var.create_cluster ? 1 : 0
   source = "../modules/gke-standard-cluster"
   project_id = var.project_id
@@ -35,4 +54,14 @@ module "ai-on-gke" {
   all_node_pools_metadata     = var.all_node_pools_metadata
   all_node_pools_tags         = var.all_node_pools_tags
 
+}
+
+module "kubernetes" {
+  source = "../modules/kubernetes"
+
+  depends_on       = [module.gke_standard]
+  region           = var.region
+  cluster_name     = var.cluster_name
+  enable_autopilot = var.enable_autopilot
+  enable_tpu       = var.enable_tpu
 }

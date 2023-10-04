@@ -141,10 +141,9 @@ all_node_pools_metadata = {
 all_node_pools_tags = ["gke-node", "ai-on-gke"]
 
 
-
-
 #######################################################
 ####    APPLICATIONS
 #######################################################
-
 # add appliction related values here
+another_app_variable1 = true
+another_app_variable2 = false

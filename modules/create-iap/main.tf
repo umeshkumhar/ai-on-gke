@@ -26,7 +26,7 @@ resource "google_iap_brand" "project_brand" {
 
 // IAP Client Definition - Will show in https://console.cloud.google.com/apis/credentials?referrer=search&project=ai-sandbox
 resource "google_iap_client" "project_client" {
-  display_name = "Terraform IAP Test Client"
+  display_name = "Terraform IAP Test Client 2"
   brand        =  google_iap_brand.project_brand.name
   # depends_on = [time_sleep.wait_for_API]
 }
