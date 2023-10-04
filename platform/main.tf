@@ -17,21 +17,22 @@ provider "google-beta" {
 
 provider "kubernetes" {
   host                   = "https://${module.gke_standard.kubernetes_endpoint}"
-  token                  = module.gke_standard.client_token //data.google_client_config.default.access_token
+  token                  = data.google_client_config.default.access_token
   cluster_ca_certificate = base64decode(module.gke_standard.ca_certificate)
+  # load_config_file = false
 }
 
 provider "kubectl" {
   host  = module.gke_standard.kubernetes_endpoint
-  token = module.gke_standard.client_token //data.google_client_config.default.access_token
+  token = data.google_client_config.default.access_token
   cluster_ca_certificate = base64decode(module.gke_standard.ca_certificate)
 }
 
 provider "helm" {
   kubernetes {
     ##config_path = pathexpand("~/.kube/config")
-    host  = module.gke_standard.gke[0].endpoint
-    token = module.gke_standard.client_token //data.google_client_config.default.access_token
+    host  = module.gke_standard.kubernetes_endpoint
+    token = data.google_client_config.default.access_token
     cluster_ca_certificate = base64decode(
        module.gke_standard.ca_certificate
     )
@@ -92,10 +93,10 @@ module "kubernetes" {
   enable_tpu       = var.enable_tpu
 }
 
-# module "kuberay" {
-#   source = "../modules/kuberay"
-
-#   depends_on   = [module.gke_autopilot, module.gke_standard]
-#   region       = var.region
-#   cluster_name = var.cluster_name
-# }
+module "kuberay" {
+  source = "../modules/kuberay"
+  # depends_on   = [module.gke_autopilot, module.gke_standard]
+  depends_on   = [module.gke_standard]
+  region       = var.region
+  cluster_name = var.cluster_name
+}
