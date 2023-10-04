@@ -10,42 +10,42 @@ data "google_client_config" "provider" {}
 #   project = var.project
 # }
 
-# provider "google" {
-#   project = var.project_id
-#   region  = var.region
-# }
+
+provider "google" { ## To pull access token to impersonate
+#  project = var.project_id
+ project 		= "juanie-newsandbox"
+ access_token	= data.google_service_account_access_token.default.access_token
+ request_timeout 	= "60s"
+ region  = var.region
+}
 
 provider "google-beta" {
   project = var.project_id
   region  = var.region
 }
 
-# provider "kubernetes" {
-#   host  = data.google_container_cluster.ml_cluster.endpoint
-#   token = data.google_client_config.provider.access_token
-#   cluster_ca_certificate = base64decode(
-#     data.google_container_cluster.ml_cluster.master_auth[0].cluster_ca_certificate
-#   )
-# }
+provider "kubernetes" {
+  host                   = "https://${module.gke_standard.kubernetes_endpoint}"
+  token                  = module.gke_standard.client_token //data.google_client_config.default.access_token
+  cluster_ca_certificate = base64decode(module.gke_standard.ca_certificate)
+}
 
-# provider "kubectl" {
-#   host  = data.google_container_cluster.ml_cluster.endpoint
-#   token = data.google_client_config.provider.access_token
-#   cluster_ca_certificate = base64decode(
-#     data.google_container_cluster.ml_cluster.master_auth[0].cluster_ca_certificate
-#   )
-# }
+provider "kubectl" {
+  host  = module.gke_standard.kubernetes_endpoint
+  token = module.gke_standard.client_token //data.google_client_config.default.access_token
+  cluster_ca_certificate = base64decode(module.gke_standard.ca_certificate)
+}
 
-# provider "helm" {
-#   kubernetes {
-#     ##config_path = pathexpand("~/.kube/config")
-#     host  = data.google_container_cluster.ml_cluster.endpoint
-#     token = data.google_client_config.provider.access_token
-#     cluster_ca_certificate = base64decode(
-#       data.google_container_cluster.ml_cluster.master_auth[0].cluster_ca_certificate
-#     )
-#   }
-# }
+provider "helm" {
+  kubernetes {
+    ##config_path = pathexpand("~/.kube/config")
+    host  = module.gke_standard.gke[0].endpoint
+    token = module.gke_standard.client_token //data.google_client_config.default.access_token
+    cluster_ca_certificate = base64decode(
+       module.gke_standard.ca_certificate
+    )
+  }
+}
 
 # module "gke_autopilot" {
 #   source = "../modules/gke_autopilot"
