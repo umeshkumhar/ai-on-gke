@@ -1,18 +1,57 @@
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
+data "google_client_config" "provider" {}
 
-
-
-module "ray-on-gke" {
-  count   = var.enable_ray_cluster ? 1 : 0
-  type    = var.type
-  network = var.network
-
+provider "kubernetes" {
+  config_path = pathexpand("~/.kube/config")
 }
 
+provider "kubectl" {
+  config_path = pathexpand("~/.kube/config")
+}
 
-module "jupyter-on-gke" {
-  count   = var.enable_jupyter_notebook ? 1 : 0
-  type    = var.type
-  network = var.network
+provider "helm" {
+  kubernetes {
+    config_path = pathexpand("~/.kube/config")
+  }
+}
 
+module "kubernetes" {
+  source = "./modules/kubernetes"
+  namespace = var.namespace
+}
+
+module "service_accounts" {
+  source = "./modules/service_accounts"
+
+  depends_on      = [module.kubernetes]
+  project_id      = var.project_id
+  namespace       = var.namespace
+  service_account = var.service_account
+}
+
+module "kuberay" {
+  source = "./modules/kuberay"
+  depends_on = [module.kubernetes]
+  namespace  = var.namespace
+  enable_tpu = var.enable_tpu
+}
+
+module "prometheus" {
+  source = "./modules/prometheus"
+  depends_on = [module.kuberay]
+  project_id = var.project_id
+  namespace  = var.namespace
 }
