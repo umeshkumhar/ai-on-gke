@@ -5,7 +5,7 @@ data "google_client_config" "provider" {}
 provider "google" { ## To pull access token to impersonate
 #  project = var.project_id
  project 		= "juanie-newsandbox"
- access_token	= data.google_service_account_access_token.default.access_token
+#  access_token	= data.google_service_account_access_token.default.access_token
  request_timeout 	= "60s"
  region  = var.region
 }

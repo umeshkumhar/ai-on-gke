@@ -5,9 +5,9 @@ steps:
   args:
   - '-c'
   - |
-      cd platform/gke-public-standard-cluster
-      terraform init -no-color
-      terraform apply -auto-approve -no-color
+      # cd platform
+      terraform -chdir="./platform/" init -no-color
+      terraform -chdir="./platform/" apply -auto-approve -no-color
 - id: Update authorised networks
   name: gcr.io/google.com/cloudsdktool/cloud-sdk
   args:
@@ -15,21 +15,24 @@ steps:
     - |
         export SHELL_IP=$$(curl https://ipinfo.io/ip) && \
         echo $$SHELL_IP && \
+        CLUSTERNAME=$(terraform output -raw cluster-name)
+        REGION=$(terraform output -raw region)
+        PROJECT=$(terraform output -raw project)
         gcloud container clusters update ml-cluster --location us-central1 --enable-master-authorized-networks --master-authorized-networks $$SHELL_IP/32
-        gcloud container clusters get-credentials ml-cluster --region us-central1 --project ai-sandbox-4 && \
+        gcloud container clusters get-credentials $CLUSTERNAME --region $REGION --project $PROJECT && \
         kubectl get pods -A
         echo ~/.kube/config > /workspace/kubeconfig.yaml
   entrypoint: bash
-# - id: Deploy hello-app
-#   name: gcr.io/google.com/cloudsdktool/cloud-sdk
-#   args:
-#     - '-c'
-#     - |
-#       export SHELL_IP=$$(curl https://ipinfo.io/ip) && \
-#       echo $$SHELL_IP && \
-#       terraform init -no-color
-#       terraform apply -auto-approve -no-color --kubeconfig /workspace/kubeconfig.yaml
-#   entrypoint: bash
+- id: Deploy User workloads
+  name: gcr.io/google.com/cloudsdktool/cloud-sdk
+  args:
+    - '-c'
+    - |
+      export KUBE_CONFIG_PATH=~/.kube/config
+      terraform -chdir="./workloads/" init  -no-color
+      terraform -chdir="./workloads/" apply -auto-approve -no-color
+      # terraform -chdir="./workloads/" apply -auto-approve -no-color --kubeconfig /workspace/kubeconfig.yaml
+  entrypoint: bash
 
 # - id: Optional Customization
 #   name: gcr.io/google.com/cloudsdktool/cloud-sdk

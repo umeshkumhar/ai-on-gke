@@ -39,10 +39,10 @@ terraform {
   }
 }
 
-# provider "google" { 
-#  # project = var.project_id
-#  project 		= "juanie-newsandbox"
-#  access_token	= data.google_service_account_access_token.default.access_token  ##Comment if not impersonating
-#  request_timeout 	= "60s"
-#  region  = var.region
-# }
+provider "google" { ##To pull access token to impersonate
+ project 		= "juanie-newsandbox"
+#  access_token	= data.google_service_account_access_token.default.access_token
+ request_timeout 	= "60s"
+ #   project = var.project_id
+ region  = var.region
+}
