@@ -1,6 +1,6 @@
 
 
-data "google_client_config" "provider" {}
+data "google_client_config" "default" {}
 
 provider "google" { ## To pull access token to impersonate
 #  project = var.project_id

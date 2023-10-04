@@ -42,7 +42,7 @@ terraform {
 provider "google" { ##To pull access token to impersonate
  project 		= "juanie-newsandbox"
 #  access_token	= data.google_service_account_access_token.default.access_token
- request_timeout 	= "60s"
+#  request_timeout 	= "60s"
  #   project = var.project_id
  region  = var.region
 }
