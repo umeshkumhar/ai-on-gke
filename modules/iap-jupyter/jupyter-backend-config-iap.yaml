@@ -1,0 +1,10 @@
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: jupyter-bc-iap
+  namespace: myray
+spec:
+  iap:
+    enabled: true
+    oauthclientCredentials:
+      secretName: my-clientid-secret

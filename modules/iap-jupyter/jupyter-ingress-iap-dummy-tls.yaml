@@ -1,0 +1,25 @@
+#########################################################
+# ONLY CHANGE THIS POINTS TO IAP SERVICE jupyter-svc-iap
+#########################################################
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: jupyter-ingress-iap
+  namespace: myray
+  annotations:  # TEST
+    kubernetes.io/ingress.allow-http: "false" # TEST
+spec:
+  tls:
+  - secretName: dummy-tls
+  rules:
+  # - host: ""
+    # http:
+  - http:
+      paths:
+      - path: /*
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: jupyter-svc-iap
+            port:
+              number: 8001

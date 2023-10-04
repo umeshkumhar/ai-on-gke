@@ -11,11 +11,16 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 variable "project_id" {
   type        = string
   description = "GCP project id"
-  default     = "umeshkumhar"
+  # default     = "ai-sandbox-3"
+}
+
+variable "project" {
+  type        = string
+  description = "GCP project "
+  # default     = "ai-sandbox-3"
 }
 
 variable "region" {
@@ -24,7 +29,29 @@ variable "region" {
   default     = "us-central1"
 }
 
-## network variables
+#######################################################
+####    IAP Configuration - OAuth Screen
+#######################################################
+variable "create_iap" {
+  type        = bool
+  description = "Is IAP created to Secure JuyperHub?"
+}
+
+variable "support_email" {
+  type        = string
+  description = "Support Admin email"
+  # default     = "gcp-organization-admins@juanie.joonix.net"
+}
+
+variable "application_title" {
+  type        = string
+  description = "OAuth Credential Welcome"
+  default     = "Sandbox - AI on GKE"
+}
+
+#######################################################
+####    network variables
+
 variable "create_network" {
   type = bool
 }
@@ -54,10 +81,7 @@ variable "subnetwork_description" {
 }
 
 variable "network_secondary_ranges" {
-  type = map(object({
-    range_name    = string
-    ip_cidr_range = string
-  }))
+  type = map(list(object({ range_name = string, ip_cidr_range = string })))
 }
 
 ## GKE variables
@@ -71,6 +95,12 @@ variable "cluster_name" {
 
 variable "cluster_region" {
   type = string
+}
+
+variable "enable_autopilot" {
+  type        = bool
+  description = "Enable Autopilot cluster"
+  default     = false
 }
 
 variable "cluster_zones" {

@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC All Rights Reserved.
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,8 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-terraform.tfvars
-terraform.tfstate*
-.terraform*
-provider_impersonated.tf
-terraform.exe
+data "http" "nvidia_driver_installer_manifest" {
+  url = "https://raw.githubusercontent.com/GoogleCloudPlatform/container-engine-accelerators/master/nvidia-driver-installer/cos/daemonset-preloaded.yaml"
+}
+
+resource "kubectl_manifest" "nvidia_driver_installer" {
+  yaml_body = data.http.nvidia_driver_installer_manifest.response_body
+  count = var.enable_tpu || var.enable_autopilot ? 0 : 1
+}
