@@ -1,26 +1,61 @@
 
-# module "gke_autopilot" {
-#   source = "./modules/gke_autopilot"
 
+data "google_client_config" "provider" {}
+
+# data "google_container_cluster" "ml_cluster" {
+#   name       = var.cluster_name
+#   location   = var.region
+#   depends_on = [module.gke_autopilot, module.gke_standard]
+#   # depends_on = [module.gke_standard]
+#   project = var.project
+# }
+
+# provider "google" {
+#   project = var.project_id
+#   region  = var.region
+# }
+
+provider "google-beta" {
+  project = var.project_id
+  region  = var.region
+}
+
+# provider "kubernetes" {
+#   host  = data.google_container_cluster.ml_cluster.endpoint
+#   token = data.google_client_config.provider.access_token
+#   cluster_ca_certificate = base64decode(
+#     data.google_container_cluster.ml_cluster.master_auth[0].cluster_ca_certificate
+#   )
+# }
+
+# provider "kubectl" {
+#   host  = data.google_container_cluster.ml_cluster.endpoint
+#   token = data.google_client_config.provider.access_token
+#   cluster_ca_certificate = base64decode(
+#     data.google_container_cluster.ml_cluster.master_auth[0].cluster_ca_certificate
+#   )
+# }
+
+# provider "helm" {
+#   kubernetes {
+#     ##config_path = pathexpand("~/.kube/config")
+#     host  = data.google_container_cluster.ml_cluster.endpoint
+#     token = data.google_client_config.provider.access_token
+#     cluster_ca_certificate = base64decode(
+#       data.google_container_cluster.ml_cluster.master_auth[0].cluster_ca_certificate
+#     )
+#   }
+# }
+
+# module "gke_autopilot" {
+#   source = "../modules/gke_autopilot"
 #   project_id       = var.project_id
 #   region           = var.region
 #   cluster_name     = var.cluster_name
 #   enable_autopilot = var.enable_autopilot
 # }
 
-
-data "google_client_config" "provider" {}
-
-data "google_container_cluster" "ml_cluster" {
-  name       = var.cluster_name
-  location   = var.region
-  # depends_on = [module.gke_autopilot, module.gke_standard]
-  depends_on = [module.gke_standard]
-  project = var.project
-}
-
 module "gke_standard" {
-  count      = var.create_cluster ? 1 : 0
   source = "../modules/gke-standard-cluster"
   project_id = var.project_id
 
@@ -56,52 +91,57 @@ module "gke_standard" {
 
 }
 
-# module "kubernetes" {
-#   source = "../modules/kubernetes"
 
-#   depends_on       = [module.gke_standard]
-#   region           = var.region
-#   cluster_name     = var.cluster_name
-#   enable_autopilot = var.enable_autopilot
-#   enable_tpu       = var.enable_tpu
+# module "gke_standard" {
+#   source = "../modules/gke_standard"
+#   project_id = var.project_id
+
+#   ## network values
+#   create_network            = var.create_network
+#   network_name              = var.network_name
+#   subnetwork_name           = var.subnetwork_name
+#   subnetwork_cidr           = var.subnetwork_cidr
+#   subnetwork_region         = var.subnetwork_region
+#   subnetwork_private_access = var.subnetwork_private_access
+#   subnetwork_description    = var.subnetwork_description
+#   network_secondary_ranges  = var.network_secondary_ranges
+
+#   ## gke variables
+#   create_cluster                       = var.create_cluster
+#   cluster_name                         = var.cluster_name
+#   cluster_region                       = var.cluster_region
+#   cluster_zones                        = var.cluster_zones
+#   ip_range_pods                        = var.ip_range_pods
+#   ip_range_services                    = var.ip_range_services
+#   monitoring_enable_managed_prometheus = var.monitoring_enable_managed_prometheus
+
+#   ## pools config variables
+#   cpu_pools                   = var.cpu_pools
+#   enable_gpu                  = var.enable_gpu
+#   gpu_pools                   = var.gpu_pools
+#   enable_tpu                  = var.enable_tpu
+#   tpu_pools                   = var.tpu_pools
+#   all_node_pools_oauth_scopes = var.all_node_pools_oauth_scopes
+#   all_node_pools_labels       = var.all_node_pools_labels
+#   all_node_pools_metadata     = var.all_node_pools_metadata
+#   all_node_pools_tags         = var.all_node_pools_tags
+
 # }
 
-########################################################################
-########################################################################
+module "kubernetes" {
+  source = "../modules/kubernetes"
 
-provider "google" {
-  project = var.project_id
-  region  = var.region
+  depends_on       = [module.gke_standard]
+  region           = var.region
+  cluster_name     = var.cluster_name
+  enable_autopilot = var.enable_autopilot
+  enable_tpu       = var.enable_tpu
 }
 
-provider "google-beta" {
-  project = var.project_id
-  region  = var.region
-}
+# module "kuberay" {
+#   source = "../modules/kuberay"
 
-provider "kubernetes" {
-  host  = data.google_container_cluster.ml_cluster.endpoint
-  token = data.google_client_config.provider.access_token
-  cluster_ca_certificate = base64decode(
-    data.google_container_cluster.ml_cluster.master_auth[0].cluster_ca_certificate
-  )
-}
-
-provider "kubectl" {
-  host  = data.google_container_cluster.ml_cluster.endpoint
-  token = data.google_client_config.provider.access_token
-  cluster_ca_certificate = base64decode(
-    data.google_container_cluster.ml_cluster.master_auth[0].cluster_ca_certificate
-  )
-}
-
-provider "helm" {
-  kubernetes {
-    ##config_path = pathexpand("~/.kube/config")
-    host  = data.google_container_cluster.ml_cluster.endpoint
-    token = data.google_client_config.provider.access_token
-    cluster_ca_certificate = base64decode(
-      data.google_container_cluster.ml_cluster.master_auth[0].cluster_ca_certificate
-    )
-  }
-}
+#   depends_on   = [module.gke_autopilot, module.gke_standard]
+#   region       = var.region
+#   cluster_name = var.cluster_name
+# }
