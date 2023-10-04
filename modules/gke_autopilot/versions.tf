@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC All Rights Reserved.
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,11 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-terraform.tfvars
-terraform.tfstate*
-.terraform*
-provider_impersonated.tf
-terraform.exe
-full_apply.sh
-*sh
-*pem
+terraform {
+  required_providers {
+  }
+  provider_meta "google" {
+    module_name = "blueprints/terraform/terraform-google-kubernetes-engine:kuberay/v0.1.0"
+  }
+}
