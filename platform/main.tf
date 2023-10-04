@@ -2,15 +2,6 @@
 
 data "google_client_config" "provider" {}
 
-# data "google_container_cluster" "ml_cluster" {
-#   name       = var.cluster_name
-#   location   = var.region
-#   depends_on = [module.gke_autopilot, module.gke_standard]
-#   # depends_on = [module.gke_standard]
-#   project = var.project
-# }
-
-
 provider "google" { ## To pull access token to impersonate
 #  project = var.project_id
  project 		= "juanie-newsandbox"
@@ -91,15 +82,15 @@ module "gke_standard" {
 
 }
 
-# module "kubernetes" {
-#   source = "../modules/kubernetes"
+module "kubernetes" {
+  source = "../modules/kubernetes"
 
-#   depends_on       = [module.gke_standard]
-#   region           = var.region
-#   cluster_name     = var.cluster_name
-#   enable_autopilot = var.enable_autopilot
-#   enable_tpu       = var.enable_tpu
-# }
+  depends_on       = [module.gke_standard]
+  region           = var.region
+  cluster_name     = var.cluster_name
+  enable_autopilot = var.enable_autopilot
+  enable_tpu       = var.enable_tpu
+}
 
 # module "kuberay" {
 #   source = "../modules/kuberay"

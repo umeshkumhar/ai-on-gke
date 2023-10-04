@@ -75,3 +75,11 @@ module "gke" {
   }
   depends_on = [google_compute_network.custom-network, module.vpc]
 }
+
+data "google_client_config" "default" {}
+
+provider "kubernetes" {
+  host                   = "https://${module.gke[0].endpoint}"
+  token                  = data.google_client_config.default.access_token
+  cluster_ca_certificate = base64decode(module.gke[0].ca_certificate)
+}
