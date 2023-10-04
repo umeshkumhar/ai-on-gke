@@ -15,9 +15,9 @@ steps:
     - |
         export SHELL_IP=$$(curl https://ipinfo.io/ip) && \
         echo $$SHELL_IP && \
-        CLUSTERNAME=$(terraform output -raw cluster-name)
-        REGION=$(terraform output -raw region)
-        PROJECT=$(terraform output -raw project)
+        CLUSTERNAME=$(terraform -chdir="./platform/" output -raw cluster-name)
+        REGION=$(terraform -chdir="./platform/" output -raw region)
+        PROJECT=$(terraform -chdir="./platform/" output -raw project)
         gcloud container clusters update ml-cluster --location us-central1 --enable-master-authorized-networks --master-authorized-networks $$SHELL_IP/32
         gcloud container clusters get-credentials $CLUSTERNAME --region $REGION --project $PROJECT && \
         kubectl get pods -A

@@ -1,20 +1,19 @@
-
-##common variables
+#######################################################
+####    PLATFORM REQUIRED VARIABLES
+#######################################################
 project_id = "ai-sandbox-4"
 project    = "ai-sandbox-4"
 
-#######################################################
-####    IAP Configuration - OAuth Screen
-#######################################################
-create_iap        = true
-support_email     = "gcp-organization-admins@juanie.joonix.net" ## Service account running terraform needs to be member with Owner role of this group in Cloud Identity Groups https://admin.google.com
-application_title = "Sandbox - AI on GKE"
+## GKE Variables
+create_cluster                       = true
+enable_autopilot                     = false    # If false, creates GKE standard cluster
+create_network                       = true
+cluster_name                         = "ml-cluster"
 
 #######################################################
-####    PLATFORM
+####    PLATFORM DEFAULTS
 #######################################################
 ## network values
-create_network            = true
 network_name              = "demo-network"
 subnetwork_name           = "subnet-01"
 subnetwork_cidr           = "10.100.0.0/16"
@@ -34,12 +33,9 @@ network_secondary_ranges = {
   ]
 }
 
-## GKE Variables - gke variables
-create_cluster                       = true
-enable_autopilot                     = false    # If false, creates GKE standard cluster
+
 
 ## Default Values
-cluster_name                         = "ml-cluster"
 cluster_region                       = "us-central1"
 cluster_zones                        = ["us-central1-a", "us-central1-b", "us-central1-f"]
 ip_range_pods                        = "us-central1-01-gke-01-pods-1"
@@ -119,7 +115,6 @@ tpu_pools = [{
   accelerator_type       = "nvidia-tesla-t4"
 }]
 
-
 ## pools config variables
 all_node_pools_oauth_scopes = [
   "https://www.googleapis.com/auth/logging.write",
@@ -142,8 +137,8 @@ all_node_pools_tags = ["gke-node", "ai-on-gke"]
 
 
 #######################################################
-####    APPLICATIONS
+####    IAP Configuration - OAuth Screen
 #######################################################
-# add appliction related values here
-# another_app_variable1 = true
-# another_app_variable2 = false
+# create_iap        = false
+# support_email     = "gcp-organization-admins@juanie.joonix.net" ## Service account running terraform needs to be member with Owner role of this group in Cloud Identity Groups https://admin.google.com
+# application_title = "Sandbox - AI on GKE"
