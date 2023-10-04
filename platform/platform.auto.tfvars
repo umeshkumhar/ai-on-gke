@@ -139,6 +139,6 @@ all_node_pools_tags = ["gke-node", "ai-on-gke"]
 #######################################################
 ####    IAP Configuration - OAuth Screen
 #######################################################
-# create_iap        = false
-# support_email     = "gcp-organization-admins@juanie.joonix.net" ## Service account running terraform needs to be member with Owner role of this group in Cloud Identity Groups https://admin.google.com
-# application_title = "Sandbox - AI on GKE"
+create_iap        = false
+support_email     = "gcp-organization-admins@juanie.joonix.net" ## Service account running terraform needs to be member with Owner role of this group in Cloud Identity Groups https://admin.google.com
+application_title = "Sandbox - AI on GKE"
