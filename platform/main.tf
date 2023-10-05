@@ -19,13 +19,14 @@ provider "kubernetes" {
   host                   = "https://${module.gke_standard.kubernetes_endpoint}"
   token                  = data.google_client_config.default.access_token
   cluster_ca_certificate = base64decode(module.gke_standard.ca_certificate)
-  # load_config_file = false
+  load_config_file = false
 }
 
 provider "kubectl" {
   host  = module.gke_standard.kubernetes_endpoint
   token = data.google_client_config.default.access_token
   cluster_ca_certificate = base64decode(module.gke_standard.ca_certificate)
+  load_config_file = false
 }
 
 provider "helm" {
