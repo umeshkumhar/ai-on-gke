@@ -26,7 +26,7 @@ steps:
         # cat  ~/.kube/config > ./workspace/kubeconfig.yaml
   entrypoint: bash
 - id: Deploy User workloads
-  name: 'hashicorp/terraform:latest'
+  name: gcr.io/cloudshell-images/cloudshell:latest
   entrypoint: sh
   args:
     - '-c'
