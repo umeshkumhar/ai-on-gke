@@ -15,13 +15,13 @@ steps:
     - |
         export SHELL_IP=$$(curl https://ipinfo.io/ip) && \
         echo $$SHELL_IP && \
-        # export CLUSTERNAME=$$(terraform -chdir="./platform/" output -raw cluster-name)
-        # export REGION=$$(terraform -chdir="./platform/" output -raw region)
-        # export PROJECT=$$(terraform -chdir="./platform/" output -raw project)
-        gcloud container clusters update ml-cluster --location us-central1 --project ai-sandbox-4 --enable-master-authorized-networks --master-authorized-networks $$SHELL_IP/32
-        # gcloud container clusters update $$CLUSTERNAME --region $$REGION --project $$PROJECT --enable-master-authorized-networks --master-authorized-networks $$SHELL_IP/32
-        # gcloud container clusters get-credentials $$CLUSTERNAME --region $$REGION --project $$PROJECT && \
-        gcloud container clusters get-credentials ml-cluster --region us-central1 --project  ai-sandbox-4 && \
+        export CLUSTERNAME=$$(cat ./platform/platform.auto.tfvars | grep -w cluster_name | awk {'print $$NF'}| awk -F'["]' '{ print $$2 }')
+        export REGION=$$(cat ./platform/platform.auto.tfvars | grep -w cluster_region | awk {'print $$NF'}| awk -F'["]' '{ print $$2 }')
+        export PROJECT=$$(cat ./platform/platform.auto.tfvars | grep -w project | awk {'print $$NF'} | awk -F'["]' '{ print $$2 }')
+        echo $$CLUSTERNAME $$REGION $$PROJECT
+        # gcloud container clusters update ml-cluster --location us-central1 --enable-master-authorized-networks --master-authorized-networks $$SHELL_IP/32
+        gcloud container clusters update $$CLUSTERNAME --region $$REGION --project $$PROJECT --enable-master-authorized-networks --master-authorized-networks $$SHELL_IP/32
+        gcloud container clusters get-credentials $$CLUSTERNAME --region $$REGION --project $$PROJECT && \
         kubectl get pods -A
         # cat  ~/.kube/config > ./workspace/kubeconfig.yaml
   entrypoint: bash
