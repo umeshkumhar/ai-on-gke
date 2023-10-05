@@ -27,6 +27,7 @@ steps:
   entrypoint: bash
 - id: Deploy User workloads
   name: 'hashicorp/terraform:latest'
+  entrypoint: sh
   args:
     - '-c'
     - |
@@ -34,7 +35,6 @@ steps:
       terraform -chdir="./workloads/" init  -no-color
       terraform -chdir="./workloads/" apply -auto-approve -no-color
       # terraform -chdir="./workloads/" apply -auto-approve -no-color --kubeconfig ./workloads/kubeconfig.yaml
-  entrypoint: bash
 
 # - id: Optional Customization
 #   name: gcr.io/google.com/cloudsdktool/cloud-sdk
