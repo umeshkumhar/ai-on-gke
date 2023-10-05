@@ -22,7 +22,7 @@ steps:
         gcloud container clusters update $CLUSTERNAME --region $REGION --enable-master-authorized-networks --master-authorized-networks $$SHELL_IP/32
         gcloud container clusters get-credentials $CLUSTERNAME --region $REGION --project $PROJECT && \
         kubectl get pods -A
-        cat  ~/.kube/config > ./workloads/kubeconfig.yaml
+        # cat  ~/.kube/config > ./workspace/kubeconfig.yaml
   entrypoint: bash
 - id: Deploy User workloads
   name: gcr.io/google.com/cloudsdktool/cloud-sdk
