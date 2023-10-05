@@ -36,7 +36,7 @@ steps:
       terraform -chdir="./workloads/" apply -auto-approve -no-color
       # terraform -chdir="./workloads/" apply -auto-approve -no-color --kubeconfig ./workloads/kubeconfig.yaml
 
-# - id: Optional Customization
+# - id: Optional Customization 
 #   name: gcr.io/google.com/cloudsdktool/cloud-sdk
 #   args:
 #     - '-c'
