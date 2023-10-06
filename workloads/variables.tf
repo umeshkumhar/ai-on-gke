@@ -41,3 +41,21 @@ variable "region" {
   description = "GCP project region or zone"
   default     = "us-central1"
 }
+
+variable "create_jupyterhub" {
+  type = bool
+  description = "Enable creation of jupyterhub"
+  default = true
+}
+
+variable "create_jupyterhub_namespace" {
+  type = bool
+  description = "Enable creation of jupyterhub namespace if it does not exist"
+  default = false
+}
+
+variable "jupyterhub_namespace" {
+  type = string
+  description = "Jupyterub Namesapce of GKE"
+  # default = myray
+}

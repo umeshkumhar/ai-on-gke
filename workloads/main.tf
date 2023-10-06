@@ -55,3 +55,13 @@ module "prometheus" {
   project_id = var.project_id
   namespace  = var.namespace
 }
+
+
+module "jupyterhub" {
+  count    = var.create_jupyterhub == true ? 1 : 0
+
+  source = "./modules/jupyterhub"
+  depends_on = [module.kuberay, module.prometheus, module.kubernetes]
+  create_namespace = var.create_jupyterhub_namespace
+  namespace  = var.jupyterhub_namespace
+}
