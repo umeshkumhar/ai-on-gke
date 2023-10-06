@@ -15,7 +15,7 @@
 terraform.tfvars
 terraform.tfstate*
 .terraform*
-provider_impersonated.tf
+provider_impersonated.tf*
 terraform.exe*
 full_apply.sh
 *sh
