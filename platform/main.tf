@@ -11,7 +11,7 @@ resource "google_compute_network" "custom-network" {
 }
 
 module "vpc-subnets" {
-  source       = "terraform-google-modules/network/google//modules/subnets"
+  source       = "github.com/umeshkumhar/terraform-google-network//modules/subnets"
   count        = var.create_network ? 1 : 0
   project_id   = var.project_id
   network_name = google_compute_network.custom-network[count.index].name
