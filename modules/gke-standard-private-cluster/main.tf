@@ -23,7 +23,7 @@ data "google_compute_subnetwork" "subnetwork" {
 }
 
 module "gke" {
-  source                               = "umeshkumhar/kubernetes-engine/google//modules/private-cluster"
+  source                               = "github.com/umeshkumhar/terraform-google-kubernetes-engine//modules/private-cluster"
   # version                              = "28.0.0"
   project_id                           = var.project_id
   regional                             = var.cluster_regional

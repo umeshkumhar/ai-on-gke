@@ -17,7 +17,7 @@ locals {
 }
 
 module "gke" {
-  source                               = "umeshkumhar/kubernetes-engine/google"
+  source                               = "github.com/umeshkumhar/terraform-google-kubernetes-engine"
   # version                              = "28.0.0"
   project_id                           = var.project_id
   regional                             = var.cluster_regional
