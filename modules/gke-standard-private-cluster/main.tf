@@ -41,7 +41,7 @@ module "gke" {
   monitoring_enable_managed_prometheus = var.monitoring_enable_managed_prometheus
 
   enable_private_endpoint = true
-  enable_private_nodes    = false
+  enable_private_nodes    = true
   master_authorized_networks = concat([
     {
       cidr_block   = data.google_compute_subnetwork.subnetwork.ip_cidr_range
