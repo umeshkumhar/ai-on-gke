@@ -3,13 +3,33 @@
 ####    APPLICATIONS
 #######################################################
 
-provider "kubernetes" {
-  config_path = pathexpand(var.kubeconfig_path)
+provider "google" {
+  project = "umeshkumhar"
 }
+
+data "google_client_config" "default" {}
+
+# Defer reading the cluster data until the GKE cluster exists.
+data "google_container_cluster" "default" {
+  name = "demo-cluster"
+}
+
+provider "kubernetes" {
+  host  = "https://${data.google_container_cluster.default.endpoint}"
+  token = data.google_client_config.default.access_token
+  cluster_ca_certificate = base64decode(
+    data.google_container_cluster.default.master_auth[0].cluster_ca_certificate,
+  )
+}
+
 
 provider "helm" {
   kubernetes {
-    config_path = pathexpand(var.kubeconfig_path)
+    host  = "https://${data.google_container_cluster.default.endpoint}"
+    token = data.google_client_config.default.access_token
+    cluster_ca_certificate = base64decode(
+      data.google_container_cluster.default.master_auth[0].cluster_ca_certificate,
+    )
   }
 }
 
