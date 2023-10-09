@@ -1,6 +1,6 @@
-terraform {
- backend "gcs" {
-   bucket  = "umeshkumhar"
-   prefix  = "workloads/state"
- }
-}
+# terraform {
+#  backend "gcs" {
+#    bucket  = "umeshkumhar"
+#    prefix  = "workloads/state"
+#  }
+# }
