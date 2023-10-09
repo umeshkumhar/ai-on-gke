@@ -28,7 +28,7 @@ network_secondary_ranges = {
 
 ## gke variables
 create_cluster                       = true
-private_cluster                      = false
+private_cluster                      = true
 cluster_name                         = "demo-cluster"
 kubernetes_version                   = "1.25"
 cluster_regional                     = true
@@ -61,7 +61,7 @@ cpu_pools = [{
   accelerator_count      = 0
 }]
 
-enable_gpu = true
+enable_gpu = false
 gpu_pools = [{
   name                   = "gpu-pool"
   machine_type           = "n1-standard-16"
