@@ -5,6 +5,7 @@
 
 provider "google" {
   project = "umeshkumhar"
+  region = "us-central1"
 }
 
 data "google_client_config" "default" {}
@@ -12,6 +13,7 @@ data "google_client_config" "default" {}
 # Defer reading the cluster data until the GKE cluster exists.
 data "google_container_cluster" "default" {
   name = "demo-cluster"
+  location = "us-central1"
 }
 
 provider "kubernetes" {
