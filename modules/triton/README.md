@@ -66,18 +66,18 @@ helm repo add prometheus-community https://prometheus-community.github.io/helm-c
 
 helm repo update
 
-helm install example-metrics --set prometheus.prometheusSpec.serviceMonitorSelectorNilUsesHelmValues=false prometheus-community/kube-prometheus-stack
+helm install example-metrics --set prometheus.prometheusSpec.serviceMonitorSelectorNilUsesHelmValues=false prometheus-community/kube-prometheus-stack --set prometheus.prometheusSpec.image.repository=prometheus-engine/prometheus --set prometheus.prometheusSpec.image.tag=v2.35.0-gmp.2-gke.0 --set prometheus.prometheusSpec.image.registry=gke.gcr.io
 
 kubectl port-forward service/example-metrics-grafana 8080:80
 
 ## <span id="step-7">Step 7: Install Triton Server </span>
 
-h install example server/deploy/gcp
+helm install example server/deploy/gcp
 
 ## <span id="step-8">Step 8: Send an Inference Request </span>
 
-docker run -it --rm --net=host nvcr.io/nvidia/tritonserver:23.09-py3-sdk
-
-cd /workspace/install/bin
+docker run -it --rm --net=host -w /workspace/install/bin nvcr.io/nvidia/tritonserver:23.09-py3-sdk
 
 image_client -u <LB_EXTERNAL_IP>:8000 -m inception_graphdef -s INCEPTION -c3 ../../images/mug.jpg
+
+docker run -it --rm --net=host -w /workspace/install/bin nvcr.io/nvidia/tritonserver:23.09-py3-sdk image_client -u $(kubectl get svc -l app=triton-inference-server -o jsonpath='{.items[*].status.loadBalancer.ingress[0].ip}'):8000 -m inception_graphdef -s INCEPTION -c3 ../../images/mug.jpg;
