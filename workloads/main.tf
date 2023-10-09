@@ -23,34 +23,34 @@ resource "helm_release" "hello" {
 }
 
 
-module "k8s_service_accounts" {
-  source = "../modules/service_accounts"
+# module "k8s_service_accounts" {
+#   source = "../modules/service_accounts"
 
-  project_id      = var.project_id
-  namespace       = var.namespace
-  service_account = var.service_account
-}
+#   project_id      = var.project_id
+#   namespace       = var.namespace
+#   service_account = var.service_account
+# }
 
-module "kuberay" {
-  source     = "../modules/kuberay"
-  depends_on = [module.kubernetes]
-  namespace  = var.namespace
-  enable_tpu = var.enable_tpu
-}
+# module "kuberay" {
+#   source     = "../modules/kuberay"
+#   depends_on = [module.kubernetes]
+#   namespace  = var.namespace
+#   enable_tpu = var.enable_tpu
+# }
 
-module "prometheus" {
-  source     = "../modules/prometheus"
-  depends_on = [module.kuberay]
-  project_id = var.project_id
-  namespace  = var.namespace
-}
+# module "prometheus" {
+#   source     = "../modules/prometheus"
+#   depends_on = [module.kuberay]
+#   project_id = var.project_id
+#   namespace  = var.namespace
+# }
 
 
-module "jupyterhub" {
-  count = var.create_jupyterhub == true ? 1 : 0
+# module "jupyterhub" {
+#   count = var.create_jupyterhub == true ? 1 : 0
 
-  source           = "../modules/jupyterhub"
-  depends_on       = [module.kuberay, module.prometheus, module.kubernetes]
-  create_namespace = var.create_jupyterhub_namespace
-  namespace        = var.jupyterhub_namespace
-}
+#   source           = "../modules/jupyterhub"
+#   depends_on       = [module.kuberay, module.prometheus, module.kubernetes]
+#   create_namespace = var.create_jupyterhub_namespace
+#   namespace        = var.jupyterhub_namespace
+# }

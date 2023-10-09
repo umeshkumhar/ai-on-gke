@@ -13,55 +13,55 @@
 # # limitations under the License.
 
 
-variable "project_id" {
-  type        = string
-  description = "GCP project id"
-  default     = "umeshkumhar"
-}
+# variable "project_id" {
+#   type        = string
+#   description = "GCP project id"
+#   default     = "umeshkumhar"
+# }
 
-variable "region" {
-  type        = string
-  description = "GCP project region or zone"
-  default     = "us-central1"
-}
+# variable "region" {
+#   type        = string
+#   description = "GCP project region or zone"
+#   default     = "us-central1"
+# }
 
  variable "kubeconfig_path" {
   type = string
   default = "~/.kube/config"
 }
 
-variable "namespace" {
-  type        = string
-  description = "Kubernetes namespace where resources are deployed"
-  default     = "myray"
-}
+# variable "namespace" {
+#   type        = string
+#   description = "Kubernetes namespace where resources are deployed"
+#   default     = "myray"
+# }
 
-variable "service_account" {
-  type        = string
-  description = "Google Cloud IAM service account for authenticating with GCP services"
-  default     = "myray-system-account"
-}
+# variable "service_account" {
+#   type        = string
+#   description = "Google Cloud IAM service account for authenticating with GCP services"
+#   default     = "myray-system-account"
+# }
 
-variable "enable_tpu" {
-  type        = bool
-  description = "Set to true to create TPU node pool"
-  default     = false
-}
+# variable "enable_tpu" {
+#   type        = bool
+#   description = "Set to true to create TPU node pool"
+#   default     = false
+# }
 
-variable "create_jupyterhub" {
-  type = bool
-  description = "Enable creation of jupyterhub"
-  default = true
-}
+# variable "create_jupyterhub" {
+#   type = bool
+#   description = "Enable creation of jupyterhub"
+#   default = true
+# }
 
-variable "create_jupyterhub_namespace" {
-  type = bool
-  description = "Enable creation of jupyterhub namespace if it does not exist"
-  default = false
-}
+# variable "create_jupyterhub_namespace" {
+#   type = bool
+#   description = "Enable creation of jupyterhub namespace if it does not exist"
+#   default = false
+# }
 
-variable "jupyterhub_namespace" {
-  type = string
-  description = "Jupyterub Namesapce of GKE"
-  # default = myray
-}
+# variable "jupyterhub_namespace" {
+#   type = string
+#   description = "Jupyterub Namesapce of GKE"
+#   # default = myray
+# }
