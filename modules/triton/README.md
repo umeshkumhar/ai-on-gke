@@ -12,7 +12,7 @@ This README contains step-by-step instructions to manually deploy the Triton Inf
 - [Step 3: Create a GCS Bucket](#step-3)
 - [Step 4: Upload Model Data to GCS Bucket](#step-4)
 - [Step 5: Modify GCS Permissions](#step-5)
-- [Step 6: Deploy Prometheus and Grafana](#step-2)
+- [Step 6: Deploy Prometheus and Grafana (Optional)](#step-6)
 - [Step 7: Install Triton Server](#step-7)
 - [Step 8: Send an Inference Request](#step-8)
 
@@ -41,7 +41,43 @@ gcloud container node-pools create gpu-pool \
 
 ## <span id="step-3">Step 3: Create a GCS Bucket</span>
 
-gcloud storage buckets create gs://triton_bucket-$DEVSHELL_PROJECT_ID
+BUCKET_NAME=triton-inference-server-repository
+
+gcloud storage buckets create gs://$BUCKET_NAME
 
 ## <span id="step-4">Step 4: Upload Model Data to GCS Bucket    </span>
 
+git clone https://github.com/triton-inference-server/server.git
+
+gsutil cp -r docs/examples/model_repository gs://triton-inference-server-repository/model_repository
+
+./server/docs/examples/fetch_models.sh
+
+
+cp -r model_repository/ server/docs/examples/
+
+## <span id="step-5">Step 5: Modify GCS Permissions    </span>
+
+[Placeholder]
+
+## <span id="step-6">Step 6: Deploy Prometheus and Grafana  (Optional)  </span>
+
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+
+helm repo update
+
+helm install example-metrics --set prometheus.prometheusSpec.serviceMonitorSelectorNilUsesHelmValues=false prometheus-community/kube-prometheus-stack
+
+kubectl port-forward service/example-metrics-grafana 8080:80
+
+## <span id="step-7">Step 7: Install Triton Server </span>
+
+h install example server/deploy/gcp
+
+## <span id="step-8">Step 8: Send an Inference Request </span>
+
+docker run -it --rm --net=host nvcr.io/nvidia/tritonserver:23.09-py3-sdk
+
+cd /workspace/install/bin
+
+image_client -u <LB_EXTERNAL_IP>:8000 -m inception_graphdef -s INCEPTION -c3 ../../images/mug.jpg
