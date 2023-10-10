@@ -53,7 +53,6 @@ gsutil cp -r docs/examples/model_repository gs://triton-inference-server-reposit
 
 ./server/docs/examples/fetch_models.sh
 
-
 cp -r model_repository/ server/docs/examples/
 
 ## <span id="step-5">Step 5: Modify GCS Permissions    </span>
@@ -72,7 +71,21 @@ kubectl port-forward service/example-metrics-grafana 8080:80
 
 ## <span id="step-7">Step 7: Install Triton Server </span>
 
+Change the ServiceMonitor in https://github.com/triton-inference-server/server/blob/main/deploy/gcp/templates/service.yaml lines 75 and 76 from:
+
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+
+to:
+
+apiVersion: monitoring.googleapis.com/v1
+kind: PodMonitoring
+
 helm install example server/deploy/gcp
+
+You can verify the proper creation of this crd with:
+
+kubectl describe podmonitorings.monitoring.googleapis.com example-triton-inference-server-metrics-monitor
 
 ## <span id="step-8">Step 8: Send an Inference Request </span>
 
