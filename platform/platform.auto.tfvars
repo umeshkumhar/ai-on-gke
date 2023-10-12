@@ -27,9 +27,9 @@ network_secondary_ranges = {
 
 ## gke variables
 create_cluster                       = true
-private_cluster                      = false
-cluster_name                         = "demo-cluster"
-kubernetes_version                   = "1.25"
+private_cluster                      = true
+cluster_name                         = "democluster"
+kubernetes_version                   = "1.27"
 cluster_regional                     = true
 cluster_region                       = "us-central1"
 cluster_zones                        = ["us-central1-a", "us-central1-b", "us-central1-f"]
@@ -83,6 +83,7 @@ gpu_pools = [{
   initial_node_count     = 1
   accelerator_count      = 2
   accelerator_type       = "nvidia-tesla-t4"
+  gpu_driver_version     = "DEFAULT"
 }]
 
 enable_tpu = false

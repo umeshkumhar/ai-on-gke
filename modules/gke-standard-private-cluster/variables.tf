@@ -145,6 +145,7 @@ variable "gpu_pools" {
     initial_node_count     = optional(number)
     accelerator_count      = optional(number)
     accelerator_type       = optional(string)
+    gpu_driver_version     = optional(string)
   }))
 }
 

@@ -2,24 +2,24 @@
 #######################################################
 ####    APPLICATIONS
 #######################################################
-data "google_client_config" "default" {}
 
 provider "google" {
-#  project 		= "juanie-newsandbox"  ## REVIEW THIS
- project = var.project_id
- request_timeout 	= "60s"
- region  = var.region
-}
-
-provider "google-beta" {
   project = var.project_id
   region  = var.region
 }
 
-# config_path = pathexpand("~/.kube/config")
+data "google_client_config" "default" {}
+
+data "google_project" "project" {
+  project_id = var.project_id
+}
 
 provider "kubernetes" {
-  config_path = pathexpand(var.kubeconfig_path)
+  host = "https://connectgateway.googleapis.com/v1/projects/${data.google_project.project.number}/locations/global/gkeMemberships/${var.cluster_name}-${var.cluster_region}"
+  exec {
+    api_version = "client.authentication.k8s.io/v1beta1"
+    command     = "gke-gcloud-auth-plugin"
+  }
 }
 
 provider "kubectl" {
@@ -28,7 +28,11 @@ provider "kubectl" {
 
 provider "helm" {
   kubernetes {
-    config_path = pathexpand(var.kubeconfig_path)
+    host = "https://connectgateway.googleapis.com/v1/projects/${data.google_project.project.number}/locations/global/gkeMemberships/${var.cluster_name}-${var.cluster_region}"
+    exec {
+      api_version = "client.authentication.k8s.io/v1beta1"
+      command     = "gke-gcloud-auth-plugin"
+    }
   }
 }
 
@@ -81,31 +85,13 @@ module "jupyterhub" {
   create_namespace = var.create_jupyterhub_namespace
   namespace        = var.jupyterhub_namespace
 }
-
-
-
-# provider "kubernetes" {
-#   host                   = "https://${module.gke_standard.kubernetes_endpoint}"
-#   token                  = data.google_client_config.default.access_token
-#   cluster_ca_certificate = base64decode(module.gke_standard.ca_certificate)
-#   load_config_file = false
-# }
-
-# provider "kubectl" {
-#   host  = module.gke_standard.kubernetes_endpoint
-#   token = data.google_client_config.default.access_token
-#   cluster_ca_certificate = base64decode(module.gke_standard.ca_certificate)
-#   load_config_file = false
-# }
-
-# provider "helm" {
-#   kubernetes {
-#     ##config_path = pathexpand("~/.kube/config")
-#     host  = module.gke_standard.kubernetes_endpoint
-#     token = data.google_client_config.default.access_token
-#     cluster_ca_certificate = base64decode(
-#        module.gke_standard.ca_certificate
-#     )
-#   }
-# }
   
+resource "helm_release" "hello" {
+  name             = "hello-world-cg"
+  repository       = "https://helm.github.io/examples"
+  chart            = "hello-world"
+  namespace        = "default"
+  create_namespace = "false"
+  cleanup_on_fail  = "true"
+}
+

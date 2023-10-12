@@ -2,19 +2,18 @@
 ####    PLATFORM
 #######################################################
 
-## create VPC network & subnets
-resource "google_compute_network" "custom-network" {
-  count                   = var.create_network ? 1 : 0
-  project                 = var.project_id
-  name                    = var.network_name
-  auto_create_subnetworks = false
+provider "google" {
+  project = var.project_id
+  region  = var.region
 }
 
-module "vpc-subnets" {
-  source       = "terraform-google-modules/network/google//modules/subnets"
+module "custom-network" {
+  source       = "terraform-google-modules/network/google"
+  version      = "7.3.0"
   count        = var.create_network ? 1 : 0
   project_id   = var.project_id
-  network_name = google_compute_network.custom-network[count.index].name
+  network_name = var.network_name
+
   subnets = [
     {
       subnet_name           = var.subnetwork_name
@@ -24,13 +23,14 @@ module "vpc-subnets" {
       description           = var.subnetwork_description
     }
   ]
+
   secondary_ranges = var.network_secondary_ranges
+  #firewall_rules = var.firewall_rules
 }
 
 locals {
-  network_name    = var.create_network ? google_compute_network.custom-network[0].name : var.network_name
-  # subnetwork_name = var.create_network ? module.vpc-subnets.subnets.0.name : var.subnetwork_name
-  subnetwork_name = var.subnetwork_name //module.vpc-subnets.subnets.0.subnet_name   
+  network_name    = var.create_network ? module.custom-network[0].network_name : var.network_name
+  subnetwork_name = var.create_network ? module.custom-network[0].subnets_names[0] : var.subnetwork_name
 }
 
 ## create public GKE

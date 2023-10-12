@@ -28,6 +28,14 @@ variable "region" {
   default     = "us-central1"
 }
 
+variable "cluster_name" {
+  type = string
+}
+
+variable "cluster_region" {
+  type = string
+}
+
  variable "kubeconfig_path" {
   type = string
   default = "~/.kube/config"

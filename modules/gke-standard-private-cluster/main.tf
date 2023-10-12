@@ -23,8 +23,9 @@ data "google_compute_subnetwork" "subnetwork" {
 }
 
 module "gke" {
-  source                               = "terraform-google-modules/kubernetes-engine/google//modules/private-cluster"
-  version                              = "28.0.0"
+  #source                               = "terraform-google-modules/kubernetes-engine/google//modules/private-cluster"
+  #version                              = "28.0.0"
+  source                               = "github.com/umeshkumhar/terraform-google-kubernetes-engine//modules/private-cluster"
   project_id                           = var.project_id
   regional                             = var.cluster_regional
   name                                 = var.cluster_name
@@ -39,9 +40,10 @@ module "gke" {
   logging_enabled_components           = ["SYSTEM_COMPONENTS", "WORKLOADS"]
   monitoring_enabled_components        = ["SYSTEM_COMPONENTS"]
   monitoring_enable_managed_prometheus = var.monitoring_enable_managed_prometheus
+  #cluster_resource_labels = { "mesh_id" : "proj-${data.google_project.project.number}" }
 
   enable_private_endpoint = true
-  enable_private_nodes    = false
+  enable_private_nodes    = true
   master_authorized_networks = concat([
     {
       cidr_block   = data.google_compute_subnetwork.subnetwork.ip_cidr_range
@@ -69,4 +71,18 @@ module "gke" {
   }
 }
 
+# GKE cluster fleet registration
+resource "google_gke_hub_membership" "gke-fleet" {
+  project       = var.project_id
+  membership_id = "${var.cluster_name}-${var.cluster_region}"
 
+  endpoint {
+    gke_cluster {
+      resource_link = module.gke.cluster_id
+    }
+  }
+
+  authority {
+    issuer = "https://container.googleapis.com/v1/${module.gke.cluster_id}"
+  }
+}
