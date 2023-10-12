@@ -12,10 +12,6 @@
 # # See the License for the specific language governing permissions and
 # # limitations under the License.
 
-variable "cluster_name" {
-  type = string
-}
-
 variable "project_id" {
   type        = string
   description = "GCP project id"
@@ -26,6 +22,11 @@ variable "region" {
   type        = string
   description = "GCP project region or zone"
   default     = "us-central1"
+}
+
+variable "private_cluster" {
+  type    = bool
+  default = true
 }
 
 variable "cluster_name" {

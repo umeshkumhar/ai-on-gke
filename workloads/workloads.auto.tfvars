@@ -1,13 +1,14 @@
 
 ##common variables  
 ## Need to pull this variables from tf output from previous platform stage
-project_id = "ai-sandbox-4"
+project_id = "umeshkumhar"
 region     = "us-central1"
 
-## this is required for terraform to connect to master and deploy workloads
-#allow_update_authorised_networks = true
+## this is required for terraform to connect to GKE master and deploy workloads
 cluster_name   = "democluster"
 cluster_region = "us-central1"
+# private cluster will use connect gateway to connect GKE master
+private_cluster = false
 
 #######################################################
 ####    APPLICATIONS
