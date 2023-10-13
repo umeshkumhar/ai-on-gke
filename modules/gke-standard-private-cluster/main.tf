@@ -14,17 +14,8 @@
 
 locals {
   node_pools = concat((var.enable_gpu ? var.gpu_pools : []), (var.enable_tpu ? var.tpu_pools : []), var.cpu_pools)
-  default_authorized_network_cidr = [{
-    cidr_block   = data.google_compute_subnetwork.subnetwork.ip_cidr_range
-    display_name = "VPC"
-  }]
 }
 
-data "google_compute_subnetwork" "subnetwork" {
-  name    = var.subnetwork_name
-  project = var.project_id
-  region  = var.cluster_region
-}
 
 module "gke" {
   #source                               = "terraform-google-modules/kubernetes-engine/google//modules/private-cluster"
@@ -48,7 +39,7 @@ module "gke" {
 
   enable_private_endpoint    = true
   enable_private_nodes       = true
-  master_authorized_networks = length(var.master_authorized_networks) > 0 ? concat(local.default_authorized_network_cidr, var.master_authorized_networks) : local.default_authorized_network_cidr
+  master_authorized_networks = var.master_authorized_networks
 
   node_pools = local.node_pools
 

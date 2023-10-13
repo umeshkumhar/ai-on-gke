@@ -33,6 +33,7 @@ module "gke" {
   logging_enabled_components           = ["SYSTEM_COMPONENTS", "WORKLOADS"]
   monitoring_enabled_components        = ["SYSTEM_COMPONENTS"]
   monitoring_enable_managed_prometheus = var.monitoring_enable_managed_prometheus
+  master_authorized_networks           = var.master_authorized_networks
 
   node_pools = local.node_pools
 

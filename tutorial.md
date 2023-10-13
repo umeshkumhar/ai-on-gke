@@ -99,6 +99,8 @@ This service account is used by the Cloud Build service to create the environmen
 
 <walkthrough-editor-open-file filePath="./cloudbuild.yaml"> Open ./cloudbuild.yaml
 
+
+
 ## Step 5: Run Terraform Apply using Cloud Build
 
 You are ready to deploy your resources now! `cloudbuild.yaml` is already prepared with all the steps requires to deploy the application. 
@@ -110,7 +112,14 @@ gcloud config set project [PROJECT_ID]
 
 Run the below command to submit cloudbuild job to deploy the resources:
 ```bash
-gcloud beta builds submit
+
+## Deploy Private GKE with Connect Gateway and deploy workloads
+gcloud beta builds submit --config=cloudbuild.yaml --substitutions=_PLATFORM_VAR_FILE="private-standard-gke-with-new-network.platform.tfvars",_WORKLOADS_VAR_FILE="private-gke-workloads.tfvars"
+
+
+## Deploy Public GKE with Authorised Networks and deploy workloads
+gcloud beta builds submit --config=cloudbuild.yaml --substitutions=_PLATFORM_VAR_FILE="public-standard-gke-with-new-network.platform.tfvars",_WORKLOADS_VAR_FILE="public-gke-workloads.tfvars"
+
 ```
 
 Monitor the terminal for the log link and status for cloud build jobs.

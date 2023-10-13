@@ -52,6 +52,7 @@ module "public-gke-standard-cluster" {
   ip_range_pods                        = var.ip_range_pods
   ip_range_services                    = var.ip_range_services
   monitoring_enable_managed_prometheus = var.monitoring_enable_managed_prometheus
+  master_authorized_networks           = var.master_authorized_networks
 
   ## pools config variables
   cpu_pools                   = var.cpu_pools
@@ -98,3 +99,16 @@ module "private-gke-standard-cluster" {
   all_node_pools_tags         = var.all_node_pools_tags
 }
 
+
+## configure cloud NAT for private GKE
+module "cloud-nat" {
+  source        = "terraform-google-modules/cloud-nat/google"
+  version       = "4.1.0"
+  count         = var.create_network && var.private_cluster ? 1 : 0
+  region        = var.region
+  project_id    = var.project_id
+  create_router = true
+  router        = "${var.network_name}-router"
+  name          = "cloud-nat-${var.network_name}-router"
+  network       = module.custom-network[0].network_name
+}

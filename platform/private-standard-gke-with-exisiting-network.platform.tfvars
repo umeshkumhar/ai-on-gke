@@ -5,39 +5,23 @@ project_id = "umeshkumhar"
 ####    PLATFORM
 #######################################################
 ## network values
-create_network            = true
-network_name              = "demo-network-1"
-subnetwork_name           = "subnet-02"
-subnetwork_cidr           = "10.100.0.0/16"
-subnetwork_region         = "us-central1"
-subnetwork_private_access = "true"
-subnetwork_description    = "GKE subnet"
-network_secondary_ranges = {
-  "subnet-02" = [
-    {
-      range_name    = "us-central1-01-gke-01-pods-1"
-      ip_cidr_range = "192.168.0.0/20"
-    },
-    {
-      range_name    = "us-central1-01-gke-01-services-1"
-      ip_cidr_range = "192.168.48.0/20"
-    }
-  ]
-}
+create_network            = false
+network_name              = "demo-network"
+subnetwork_name           = "subnet-01"
 
 ## gke variables
 create_cluster                       = true
 private_cluster                      = true
-cluster_name                         = "demo-cluster1"
+cluster_name                         = "demo-cluster-1"
 kubernetes_version                   = "1.27"
 cluster_regional                     = true
 cluster_region                       = "us-central1"
 cluster_zones                        = ["us-central1-a", "us-central1-b", "us-central1-f"]
-ip_range_pods                        = "us-central1-01-gke-01-pods-1"
-ip_range_services                    = "us-central1-01-gke-01-services-1"
+ip_range_pods                        = "us-central1-01-gke-01-pods-1" # same name as secondary ranges
+ip_range_services                    = "us-central1-01-gke-01-services-1" # same name as secondary ranges
 monitoring_enable_managed_prometheus = true
 master_authorized_networks = [{
-  cidr_block   = "10.100.0.0/16"
+  cidr_block   = "10.100.0.0/16"  # add subnet CIDR to allow VPC access
   display_name = "VPC"
 }]
 
@@ -64,7 +48,8 @@ cpu_pools = [{
   accelerator_count      = 0
 }]
 
-enable_gpu = true
+## make sure required gpu quotas are available in that region
+enable_gpu = false
 gpu_pools = [{
   name                   = "gpu-pool"
   machine_type           = "n1-standard-16"

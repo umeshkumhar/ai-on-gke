@@ -8,26 +8,11 @@ project_id = "umeshkumhar"
 create_network            = true
 network_name              = "demo-network-1"
 subnetwork_name           = "subnet-02"
-subnetwork_cidr           = "10.100.0.0/16"
-subnetwork_region         = "us-central1"
-subnetwork_private_access = "true"
-subnetwork_description    = "GKE subnet"
-network_secondary_ranges = {
-  "subnet-02" = [
-    {
-      range_name    = "us-central1-01-gke-01-pods-1"
-      ip_cidr_range = "192.168.0.0/20"
-    },
-    {
-      range_name    = "us-central1-01-gke-01-services-1"
-      ip_cidr_range = "192.168.48.0/20"
-    }
-  ]
-}
+
 
 ## gke variables
 create_cluster                       = true
-private_cluster                      = true
+private_cluster                      = false
 cluster_name                         = "demo-cluster1"
 kubernetes_version                   = "1.27"
 cluster_regional                     = true
@@ -37,8 +22,8 @@ ip_range_pods                        = "us-central1-01-gke-01-pods-1"
 ip_range_services                    = "us-central1-01-gke-01-services-1"
 monitoring_enable_managed_prometheus = true
 master_authorized_networks = [{
-  cidr_block   = "10.100.0.0/16"
-  display_name = "VPC"
+  cidr_block   = "135.23.43.2/32"
+  display_name = "Home"
 }]
 
 cpu_pools = [{
