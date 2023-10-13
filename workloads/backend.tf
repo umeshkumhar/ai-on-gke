@@ -1,6 +1,6 @@
 # terraform {
-#  backend "gcs" {
+#   backend "gcs" {
 #     bucket  = "umeshkumhar"
-#     prefix  = "workloads/state"
-#  }
+#     prefix  = "wl"
+#   }
 # }

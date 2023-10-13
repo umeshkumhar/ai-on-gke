@@ -14,6 +14,10 @@
 
 locals {
   node_pools = concat((var.enable_gpu ? var.gpu_pools : []), (var.enable_tpu ? var.tpu_pools : []), var.cpu_pools)
+  default_authorized_network_cidr = [{
+    cidr_block   = data.google_compute_subnetwork.subnetwork.ip_cidr_range
+    display_name = "VPC"
+  }]
 }
 
 data "google_compute_subnetwork" "subnetwork" {
@@ -42,15 +46,9 @@ module "gke" {
   monitoring_enable_managed_prometheus = var.monitoring_enable_managed_prometheus
   #cluster_resource_labels = { "mesh_id" : "proj-${data.google_project.project.number}" }
 
-  enable_private_endpoint = true
-  enable_private_nodes    = true
-  master_authorized_networks = concat([
-    {
-      cidr_block   = data.google_compute_subnetwork.subnetwork.ip_cidr_range
-      display_name = "VPC"
-    }],
-    var.master_authorized_networks
-  )
+  enable_private_endpoint    = true
+  enable_private_nodes       = true
+  master_authorized_networks = length(var.master_authorized_networks) > 0 ? concat(local.default_authorized_network_cidr, var.master_authorized_networks) : local.default_authorized_network_cidr
 
   node_pools = local.node_pools
 

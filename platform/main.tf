@@ -35,7 +35,6 @@ locals {
 
 ## create public GKE
 module "public-gke-standard-cluster" {
-  depends_on      = [module.vpc-subnets, google_compute_network.custom-network]
   count      = var.create_cluster && !var.private_cluster ? 1 : 0
   source     = "../modules/gke-standard-public-cluster"
   project_id = var.project_id
@@ -68,7 +67,6 @@ module "public-gke-standard-cluster" {
 
 ## create private GKE
 module "private-gke-standard-cluster" {
-  depends_on      = [module.vpc-subnets, google_compute_network.custom-network]
   count      = var.create_cluster && var.private_cluster ? 1 : 0
   source     = "../modules/gke-standard-private-cluster"
   project_id = var.project_id

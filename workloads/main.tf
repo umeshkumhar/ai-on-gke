@@ -16,10 +16,11 @@ data "google_project" "project" {
 
 data "google_container_cluster" "default" {
   name = var.cluster_name
+  location = var.cluster_location
 }
 
 provider "kubectl" {
-  host                   = var.private_cluster ? "https://connectgateway.googleapis.com/v1/projects/${data.google_project.project.number}/locations/global/gkeMemberships/${var.cluster_name}-${var.cluster_region}" : "https://${data.google_container_cluster.default.endpoint}"
+  host                   = var.private_cluster ? "https://connectgateway.googleapis.com/v1/projects/${data.google_project.project.number}/locations/global/gkeMemberships/${var.cluster_name}-${var.cluster_location}" : "https://${data.google_container_cluster.default.endpoint}"
   token                  = var.private_cluster ? "" : data.google_client_config.default.access_token
   cluster_ca_certificate = var.private_cluster ? "" : base64decode(data.google_container_cluster.default.master_auth[0].cluster_ca_certificate)
   dynamic "exec" {
@@ -32,7 +33,7 @@ provider "kubectl" {
 }
 
 provider "kubernetes" {
-  host                   = var.private_cluster ? "https://connectgateway.googleapis.com/v1/projects/${data.google_project.project.number}/locations/global/gkeMemberships/${var.cluster_name}-${var.cluster_region}" : "https://${data.google_container_cluster.default.endpoint}"
+  host                   = var.private_cluster ? "https://connectgateway.googleapis.com/v1/projects/${data.google_project.project.number}/locations/global/gkeMemberships/${var.cluster_name}-${var.cluster_location}" : "https://${data.google_container_cluster.default.endpoint}"
   token                  = var.private_cluster ? "" : data.google_client_config.default.access_token
   cluster_ca_certificate = var.private_cluster ? "" : base64decode(data.google_container_cluster.default.master_auth[0].cluster_ca_certificate)
   dynamic "exec" {
@@ -46,7 +47,7 @@ provider "kubernetes" {
 
 provider "helm" {
   kubernetes {
-    host                   = var.private_cluster ? "https://connectgateway.googleapis.com/v1/projects/${data.google_project.project.number}/locations/global/gkeMemberships/${var.cluster_name}-${var.cluster_region}" : "https://${data.google_container_cluster.default.endpoint}"
+    host                   = var.private_cluster ? "https://connectgateway.googleapis.com/v1/projects/${data.google_project.project.number}/locations/global/gkeMemberships/${var.cluster_name}-${var.cluster_location}" : "https://${data.google_container_cluster.default.endpoint}"
     token                  = var.private_cluster ? "" : data.google_client_config.default.access_token
     cluster_ca_certificate = var.private_cluster ? "" : base64decode(data.google_container_cluster.default.master_auth[0].cluster_ca_certificate)
     dynamic "exec" {

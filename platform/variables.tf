@@ -101,7 +101,7 @@ variable "monitoring_enable_managed_prometheus" {
 variable "master_authorized_networks" {
   type = list(object({
     cidr_block   = string
-    display_name = string
+    display_name = optional(string)
   }))
   default = []
 }

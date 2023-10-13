@@ -5,10 +5,10 @@ project_id = "umeshkumhar"
 region     = "us-central1"
 
 ## this is required for terraform to connect to GKE master and deploy workloads
-cluster_name   = "democluster"
-cluster_region = "us-central1"
+cluster_name   = "demo-cluster"
+cluster_location = "us-central1"
 # private cluster will use connect gateway to connect GKE master
-private_cluster = false
+private_cluster = true
 
 #######################################################
 ####    APPLICATIONS

@@ -1,19 +1,19 @@
 ##common variables
-project_id = "ai-sandbox-4"
+project_id = "umeshkumhar"
 
 #######################################################
 ####    PLATFORM
 #######################################################
 ## network values
 create_network            = true
-network_name              = "demo-network"
-subnetwork_name           = "subnet-01"
+network_name              = "demo-network-1"
+subnetwork_name           = "subnet-02"
 subnetwork_cidr           = "10.100.0.0/16"
 subnetwork_region         = "us-central1"
 subnetwork_private_access = "true"
 subnetwork_description    = "GKE subnet"
 network_secondary_ranges = {
-  subnet-01 = [
+  "subnet-02" = [
     {
       range_name    = "us-central1-01-gke-01-pods-1"
       ip_cidr_range = "192.168.0.0/20"
@@ -28,7 +28,7 @@ network_secondary_ranges = {
 ## gke variables
 create_cluster                       = true
 private_cluster                      = true
-cluster_name                         = "democluster"
+cluster_name                         = "demo-cluster"
 kubernetes_version                   = "1.27"
 cluster_regional                     = true
 cluster_region                       = "us-central1"
