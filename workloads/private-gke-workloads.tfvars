@@ -18,7 +18,7 @@ private_cluster = true
 namespace       = "myray"
 service_account = "myray-system-account"
 enable_tpu      = false
-enable_autopilot = false    # If false, creates GKE standard cluster # Needed to install or not nvidia driver # If = true, functionality not created yet.
+enable_autopilot = true    # If false, creates GKE standard cluster # Needed to install or not nvidia driver # If = true, functionality not created yet.
 
 ## JupyterHub variables
 create_jupyterhub           = true    # Default = true, creates JupyterHub

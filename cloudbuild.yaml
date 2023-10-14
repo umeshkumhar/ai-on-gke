@@ -24,10 +24,11 @@ steps:
         then 
           echo "GKE have private endpoint, consider enabling connect gateway!"
         else
-          EXISTING_AUTH_NETS=$$(gcloud container clusters describe $$CLUSTERNAME --location $$REGION --project $$PROJECT --format "flattened(masterAuthorizedNetworksConfig.cidrBlocks[])") && \
-          gcloud container clusters update $$CLUSTERNAME --location $$REGION --project $$PROJECT --enable-master-authorized-networks --master-authorized-networks $$SHELL_IP/32,$$EXISTING_AUTH_NETS,
+          export EXISTING_AUTH_NETS=$$(gcloud container clusters describe $$CLUSTERNAME --location $$REGION --project $$PROJECT --format "value[delimiter=','](masterAuthorizedNetworksConfig.cidrBlocks[].cidrBlock)") && \
+          echo "$$SHELL_IP/32,$$EXISTING_AUTH_NETS"
+          gcloud container clusters update $$CLUSTERNAME --location $$REGION --project $$PROJECT --enable-master-authorized-networks --master-authorized-networks "$$SHELL_IP/32,$$EXISTING_AUTH_NETS"
           gcloud container clusters get-credentials $$CLUSTERNAME --region $$REGION --project $$PROJECT && \
-          kubectl get pods -A
+          kubectl get ns
         fi 
   entrypoint: bash
 - id: Deploy Workloads on provided platform GKE
