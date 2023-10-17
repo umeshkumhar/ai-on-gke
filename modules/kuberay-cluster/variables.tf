@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC All Rights Reserved.
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,11 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Ignore Mac DS_Store files
-.DS_Store
-**/.DS_Store
+variable "namespace" {
+  type        = string
+  description = "Kubernetes namespace where resources are deployed"
+  default     = "ray"
+}
 
-
-terraform.tfstate*
-.terraform*
-*code-workspace*
+variable "enable_tpu" {
+  type        = bool
+  description = "Set to true to create TPU node pool"
+  default     = false
+}

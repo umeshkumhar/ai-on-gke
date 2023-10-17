@@ -12,20 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-variable "region" {
+variable "project_id" {
   type        = string
-  description = "GCP project region or zone"
-  default     = "us-central1"
-}
-
-variable "cluster_name" {
-  type        = string
-  description = "Kubernetes cluster name"
-  default     = "ml-cluster"
+  description = "GCP project id"
 }
 
 variable "namespace" {
   type        = string
   description = "Kubernetes namespace where resources are deployed"
   default     = "ray"
+}
+
+variable "service_account" {
+  type        = string
+  description = "Google Cloud IAM service account for authenticating with GCP services"
+  default     = "ray-system-account"
 }

@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC All Rights Reserved.
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,11 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Ignore Mac DS_Store files
-.DS_Store
-**/.DS_Store
+data "local_file" "fluentd_config_yaml" {
+  filename = "${path.module}/config/fluentd_config.yaml"
+}
 
+resource "kubernetes_namespace" "ml" {
+  metadata {
+    name = var.namespace
+  }
+}
 
-terraform.tfstate*
-.terraform*
-*code-workspace*
+resource "kubectl_manifest" "fluentd_config" {
+  override_namespace = var.namespace
+  yaml_body          = data.local_file.fluentd_config_yaml.content
+}

@@ -1,4 +1,3 @@
-
 ##common variables
 project_id = "umeshkumhar"
 
@@ -6,34 +5,25 @@ project_id = "umeshkumhar"
 ####    PLATFORM
 #######################################################
 ## network values
-create_network            = true
+create_network            = false
 network_name              = "demo-network"
 subnetwork_name           = "subnet-01"
-subnetwork_cidr           = "10.100.0.0/16"
-subnetwork_region         = "us-central1"
-subnetwork_private_access = "true"
-subnetwork_description    = "GKE subnet"
-network_secondary_ranges = {
-  subnet-01 = [
-    {
-      range_name    = "us-central1-01-gke-01-pods-1"
-      ip_cidr_range = "192.168.0.0/20"
-    },
-    {
-      range_name    = "us-central1-01-gke-01-services-1"
-      ip_cidr_range = "192.168.48.0/20"
-    }
-  ]
-}
 
 ## gke variables
 create_cluster                       = true
-cluster_name                         = "demo"
+private_cluster                      = true
+cluster_name                         = "demo-cluster-1"
+kubernetes_version                   = "1.27"
+cluster_regional                     = true
 cluster_region                       = "us-central1"
 cluster_zones                        = ["us-central1-a", "us-central1-b", "us-central1-f"]
-ip_range_pods                        = "us-central1-01-gke-01-pods-1"
-ip_range_services                    = "us-central1-01-gke-01-services-1"
+ip_range_pods                        = "us-central1-01-gke-01-pods-1" # same name as secondary ranges
+ip_range_services                    = "us-central1-01-gke-01-services-1" # same name as secondary ranges
 monitoring_enable_managed_prometheus = true
+master_authorized_networks = [{
+  cidr_block   = "10.100.0.0/16"  # add subnet CIDR to allow VPC access
+  display_name = "VPC"
+}]
 
 cpu_pools = [{
   name                   = "cpu-pool"
@@ -58,7 +48,8 @@ cpu_pools = [{
   accelerator_count      = 0
 }]
 
-enable_gpu = true
+## make sure required gpu quotas are available in that region
+enable_gpu = false
 gpu_pools = [{
   name                   = "gpu-pool"
   machine_type           = "n1-standard-16"
@@ -81,6 +72,7 @@ gpu_pools = [{
   initial_node_count     = 1
   accelerator_count      = 2
   accelerator_type       = "nvidia-tesla-t4"
+  gpu_driver_version     = "DEFAULT"
 }]
 
 enable_tpu = false
@@ -130,10 +122,3 @@ all_node_pools_metadata = {
 all_node_pools_tags = ["gke-node", "ai-on-gke"]
 
 
-
-
-#######################################################
-####    APPLICATIONS
-#######################################################
-
-# add appliction related values here
