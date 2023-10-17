@@ -49,10 +49,9 @@ gcloud storage buckets create gs://$BUCKET_NAME
 
 git clone https://github.com/triton-inference-server/server.git
 
-gsutil cp -r docs/examples/model_repository gs://triton-inference-server-repository/model_repository
+gsutil cp -r docs/examples/model_repository gs://$BUCKET_NAME/model_repository
 
 ./server/docs/examples/fetch_models.sh
-
 
 cp -r model_repository/ server/docs/examples/
 
@@ -72,7 +71,21 @@ kubectl port-forward service/example-metrics-grafana 8080:80
 
 ## <span id="step-7">Step 7: Install Triton Server </span>
 
+Change the ServiceMonitor in https://github.com/triton-inference-server/server/blob/main/deploy/gcp/templates/service.yaml lines 75 and 76 from:
+
+apiVersion: monitoring.coreos.com/v1<br>
+kind: ServiceMonitor<br>
+
+to:
+
+apiVersion: monitoring.googleapis.com/v1<br>
+kind: PodMonitoring<br>
+
 helm install example server/deploy/gcp
+
+You can verify the proper creation of this crd with:
+
+kubectl describe podmonitorings.monitoring.googleapis.com example-triton-inference-server-metrics-monitor
 
 ## <span id="step-8">Step 8: Send an Inference Request </span>
 
