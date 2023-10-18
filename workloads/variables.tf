@@ -37,6 +37,10 @@ variable "cluster_location" {
   type = string
 }
 
+variable "cluster_membership_id" {
+  type = string
+}
+
  variable "kubeconfig_path" {
   type = string
   default = "~/.kube/config"

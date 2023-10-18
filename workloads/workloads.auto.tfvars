@@ -8,7 +8,7 @@ region     = "us-central1"
 cluster_name   = "demo-cluster"
 cluster_location = "us-central1"
 # private cluster will use connect gateway to connect GKE master
-private_cluster = true
+private_cluster = false
 
 #######################################################
 ####    APPLICATIONS
