@@ -1,7 +1,7 @@
 
 ##common variables  
 ## Need to pull this variables from tf output from previous platform stage
-project_id = "umeshkumhar"
+project_id = "ai-sandbox-5"
 region     = "us-central1"
 
 ## this is required for terraform to connect to GKE master and deploy workloads
@@ -18,7 +18,7 @@ private_cluster = false
 namespace       = "myray"
 service_account = "myray-system-account"
 enable_tpu      = false
-enable_autopilot = true    # If false, creates GKE standard cluster # Needed to install or not nvidia driver # If = true, functionality not created yet.
+enable_autopilot = false    # If false, creates GKE standard cluster # Needed to install or not nvidia driver # If = true, functionality not created yet.
 
 ## JupyterHub variables
 create_jupyterhub           = true    # Default = true, creates JupyterHub

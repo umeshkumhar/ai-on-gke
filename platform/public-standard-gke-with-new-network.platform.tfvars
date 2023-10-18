@@ -1,5 +1,5 @@
 ##common variables
-project_id = "umeshkumhar"
+project_id = "ai-sandbox-5"
 
 #######################################################
 ####    PLATFORM
@@ -65,7 +65,7 @@ cpu_pools = [{
 }]
 
 ## make sure gpu quotas are available in given region
-enable_gpu = false
+enable_gpu = true
 gpu_pools = [{
   name                   = "gpu-pool"
   machine_type           = "n1-standard-16"
