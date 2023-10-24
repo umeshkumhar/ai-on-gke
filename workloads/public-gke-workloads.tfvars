@@ -9,6 +9,7 @@ cluster_name   = "demo-cluster-4"
 cluster_location = "us-central1"
 # private cluster will use connect gateway to connect GKE master
 private_cluster = false
+cluster_membership_id = "demo-cluster-2-us-central1" 
 
 #######################################################
 ####    APPLICATIONS
