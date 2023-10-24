@@ -23,10 +23,12 @@ resource "google_storage_bucket" "bucket" {
   project  = var.project_id
 }
 
-resource "google_storage_bucket_acl" "public_read" {
+resource "google_storage_bucket_iam_binding" "bucket-iam-binding" {
   bucket = google_storage_bucket.bucket.name
-  role_entity = [
-    "READER:allUsers"
+  role   = "roles/storage.objectViewer"
+
+  members = [
+    "serviceAccount:${var.project_id}.svc.id.goog[${var.namespace}/default]",
   ]
 }
 
