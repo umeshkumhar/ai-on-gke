@@ -110,3 +110,10 @@ module "jupyterhub" {
   namespace        = var.jupyterhub_namespace
 }
 
+module "triton" {
+  count            = var.create_triton == true ? 1 : 0
+  source           = "../modules/triton"
+  depends_on       = [module.kuberay-cluster, module.kubernetes-namespace, module.k8s_service_accounts]
+  create_namespace = var.create_triton_namespace
+  namespace        = var.triton_namespace
+}
