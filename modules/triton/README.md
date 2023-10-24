@@ -2,19 +2,15 @@
 
 ---
 
-This README contains step-by-step instructions to manually deploy the Triton Inference Server on a Google Kubernetes Engine (GKE) cluster. These instructions are intended as a temporary guide to get users started with the setup while the terraform automation is set up.
+This README contains step-by-step instructions to manually deploy the Triton Inference Server on a Google Kubernetes Engine (GKE) cluster. 
+Utilizing this script facilitates an automated setup process. The terraform script is designed to handle the provisioning and management of the required GCP resources, as well as the deployment of the Triton Inference Server on the GKE cluster, the script can also be used in a standalone way with an existing cluster.
 
 ## Table of Contents
 
 - [Prerequesites](#prerequisites)
-- [Step 1: Create a GKE Cluster](#step-1)
-- [Step 2: Add GPU Node Pools](#step-2)
-- [Step 3: Create a GCS Bucket](#step-3)
-- [Step 4: Upload Model Data to GCS Bucket](#step-4)
-- [Step 5: Modify GCS Permissions](#step-5)
-- [Step 6: Deploy Prometheus and Grafana (Optional)](#step-6)
-- [Step 7: Install Triton Server](#step-7)
-- [Step 8: Send an Inference Request](#step-8)
+- [Quickstart](#quickstart)
+- [Terraform script overview](#terraform-script-overview)
+- [Collaboration and feedback](#collaboration)
 
 
 ## Prerequisites
@@ -22,75 +18,47 @@ This README contains step-by-step instructions to manually deploy the Triton Inf
 - Ensure you have the required credentials and access to a GCP account.
 - Install the Google Cloud SDK
 - Install Helm and kubectl
+- An existing GKE cluster with Workload Identity enabled.
+- When running in standalone mode, ensure the `KUBE_CONFIG_PATH` environment is set with a valid path to a Kubernetes configuration for the Helm provider to work correctly.
 
-## <span id="step-1">Step 1: Create a GKE Cluster</span>
+## <span id="quickstart">Quickstart</span>
 
-gcloud container clusters create triton-cluster --release-channel regular --region us-central1 --node-locations us-central1-a,us-central1-c
+1. Navigate to the `triton` module directory:
+```bash
+cd ai-on-gke/modules/triton
+```
 
-## <span id="step-2">Step 2: Add GPU Node Pools</span>
+2. Initialize terraform configuration:
+```bash
+terraform init
+```
 
-gcloud container node-pools create gpu-pool \
-  --accelerator type=nvidia-tesla-t4,count=2,gpu-driver-version=latest \
-  --machine-type n1-standard-8 \
-  --region us-central1 --cluster  triton-cluster \
-  --node-locations us-central1-a,us-central1-c \
-  --num-nodes 2 \
-  --enable-autoscaling \
-   --min-nodes 0 \
-   --max-nodes 2
+3. Update the terraform.tfvars with the appropriate values for your GCP environment.
 
-## <span id="step-3">Step 3: Create a GCS Bucket</span>
+4. Apply the terraform script:
+```bash
+terraform apply
+```
 
-BUCKET_NAME=triton-inference-server-repository
+5. Upon successfull completion, the Triton Inference Server will be deployed and accessible on your GKE cluster, you can send an inference request with:
 
-gcloud storage buckets create gs://$BUCKET_NAME
+```bash
+docker run -it --rm --net=host -w /workspace/install/bin nvcr.io/nvidia/tritonserver:23.09-py3-sdk image_client -u $(kubectl get svc -l app=triton-inference-server -o jsonpath='{.items[*].status.loadBalancer.ingress[0].ip}'):8000 -m inception_graphdef -s INCEPTION -c3 ../../images/mug.jpg;
+```
 
-## <span id="step-4">Step 4: Upload Model Data to GCS Bucket    </span>
+## <span id="terraform-script-overview">Terraform script overview</span>
 
-git clone https://github.com/triton-inference-server/server.git
+- **Random ID Generation**: Generates a random ID suffix for naming the Google Cloud Storage (GCS) bucket.
+- **GCS Bucket Creation**: Creates a GCS bucket for storing sample model data.
 
-gsutil cp -r docs/examples/model_repository gs://$BUCKET_NAME/model_repository
+- **Bucket Access Control**: Modifies the permissions of the GCS bucket to allow access through workload identity.
 
-./server/docs/examples/fetch_models.sh
+- **Model Data Upload**: Uploads the model data to the GCS bucket.
 
-cp -r model_repository/ server/docs/examples/
+- **GMP Metrics modification**: Modifies the GMP metrics settings in the service.yaml template file.
 
-## <span id="step-5">Step 5: Modify GCS Permissions    </span>
+- **Triton Server Deployment**: Deploys the Triton Inference server on the GKE cluster using a local Helm chart.
+
+## <span id="collaboration">Collaboration and feedback</span>
 
 [Placeholder]
-
-## <span id="step-6">Step 6: Deploy Prometheus and Grafana  (Optional)  </span>
-
-helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-
-helm repo update
-
-helm install example-metrics --set prometheus.prometheusSpec.serviceMonitorSelectorNilUsesHelmValues=false prometheus-community/kube-prometheus-stack --set prometheus.prometheusSpec.image.repository=prometheus-engine/prometheus --set prometheus.prometheusSpec.image.tag=v2.35.0-gmp.2-gke.0 --set prometheus.prometheusSpec.image.registry=gke.gcr.io
-
-kubectl port-forward service/example-metrics-grafana 8080:80
-
-## <span id="step-7">Step 7: Install Triton Server </span>
-
-Change the ServiceMonitor in https://github.com/triton-inference-server/server/blob/main/deploy/gcp/templates/service.yaml lines 75 and 76 from:
-
-apiVersion: monitoring.coreos.com/v1<br>
-kind: ServiceMonitor<br>
-
-to:
-
-apiVersion: monitoring.googleapis.com/v1<br>
-kind: PodMonitoring<br>
-
-helm install example server/deploy/gcp
-
-You can verify the proper creation of this crd with:
-
-kubectl describe podmonitorings.monitoring.googleapis.com example-triton-inference-server-metrics-monitor
-
-## <span id="step-8">Step 8: Send an Inference Request </span>
-
-docker run -it --rm --net=host -w /workspace/install/bin nvcr.io/nvidia/tritonserver:23.09-py3-sdk
-
-image_client -u <LB_EXTERNAL_IP>:8000 -m inception_graphdef -s INCEPTION -c3 ../../images/mug.jpg
-
-docker run -it --rm --net=host -w /workspace/install/bin nvcr.io/nvidia/tritonserver:23.09-py3-sdk image_client -u $(kubectl get svc -l app=triton-inference-server -o jsonpath='{.items[*].status.loadBalancer.ingress[0].ip}'):8000 -m inception_graphdef -s INCEPTION -c3 ../../images/mug.jpg;
