@@ -87,3 +87,9 @@ variable "enable_autopilot" {
   description = "Enable Autopilot cluster"
   default     = false
 }
+
+variable "create_ray" {
+  type = bool
+  description = "Enable creation of Ray on GKE"
+  default = true
+}
