@@ -23,10 +23,12 @@ enable_tpu      = false
 enable_autopilot = false    # If false, creates GKE standard cluster # Needed to install or not nvidia driver # If = true, functionality not created yet.
 
 ## Ray variables
-
+create_ray       = true  
 
 ## JupyterHub variables
 create_jupyterhub           = true    # Default = true, creates JupyterHub
 create_jupyterhub_namespace = false   # Default = false, uses default ray namespace "myray". 
 jupyterhub_namespace        = "myray" # If create_jupyterhub_namespace = false, then keep this same as namespace (from GKE variables)
 
+
+## Triton variables
