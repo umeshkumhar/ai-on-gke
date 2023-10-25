@@ -115,8 +115,9 @@ Run the below command to submit cloudbuild job to deploy the resources:
 
 ## Deploy Private GKE with Connect Gateway and deploy workloads
 gcloud beta builds submit --config=cloudbuild.yaml --substitutions=_PLATFORM_VAR_FILE="private-standard-gke-with-new-network.platform.tfvars",_WORKLOADS_VAR_FILE="private-gke-workloads.tfvars"
+```
 
-
+```bash
 ## Deploy Public GKE with Authorised Networks and deploy workloads
 gcloud beta builds submit --config=cloudbuild.yaml --substitutions=_PLATFORM_VAR_FILE="public-standard-gke-with-new-network.platform.tfvars",_WORKLOADS_VAR_FILE="public-gke-workloads.tfvars"
 
