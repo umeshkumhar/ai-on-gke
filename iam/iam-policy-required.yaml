@@ -10,6 +10,9 @@ bindings:
   role: roles/resourcemanager.projectIamAdmin
 - members:
   - serviceAccount:aiongke@PROJECTNAME.iam.gserviceaccount.com
+  role: roles/iam.serviceAccountAdmin
+- members:
+  - serviceAccount:aiongke@PROJECTNAME.iam.gserviceaccount.com
   role: roles/iam.serviceAccountUser
 - members:
   - serviceAccount:aiongke@PROJECTNAME.iam.gserviceaccount.com
