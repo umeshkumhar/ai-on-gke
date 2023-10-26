@@ -73,3 +73,7 @@ variable "bucket_location" {
   default     = "US"
 }
 
+variable "service_account_id" {
+  type        = string
+  description = "Service account to use for workload identity"
+}

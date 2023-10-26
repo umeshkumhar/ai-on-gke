@@ -50,23 +50,24 @@ resource "null_resource" "upload_folder" {
   }
 }
 
-resource "null_resource" "enable_gmp_metrics" {
-  depends_on = [null_resource.git_clone]
-
-  provisioner "local-exec" {
-    command = <<EOF
-    sed -i 's/apiVersion: monitoring.coreos.com\/v1/apiVersion: monitoring.googleapis.com\/v1/' /${var.temporary_work_dir}/server/deploy/gcp/templates/service.yaml
-    sed -i 's/kind: ServiceMonitor/kind: PodMonitoring/' /${var.temporary_work_dir}/server/deploy/gcp/templates/service.yaml
-    EOF
+resource "kubernetes_annotations" "default" {
+  api_version = "v1"
+  kind        = "ServiceAccount"
+  metadata {
+    name = "default"
+    namespace = "${var.namespace}"
+  }
+  annotations = {
+    "iam.gke.io/gcp-service-account" = "${var.service_account_id}@${var.project_id}.iam.gserviceaccount.com"
   }
 }
 
 resource "helm_release" "triton-inference-server" {
-  depends_on       = [null_resource.enable_gmp_metrics]
+  depends_on       = [null_resource.upload_folder]
   name             = var.helm_release_name
   namespace        = var.namespace
   create_namespace = var.create_namespace
-  chart            = "${var.temporary_work_dir}/server/deploy/gcp"
+  chart            = "./gcp_helm_chart"
   set {
     name  = "image.modelRepositoryPath"
     value = "gs://${google_storage_bucket.bucket.name}/${var.model_repository_folder_name}"
