@@ -27,8 +27,9 @@ Here on step 1 you need to update the PLATFORM terraform tfvars file (located in
 <walkthrough-editor-open-file filePath="./platform/platform.auto.tfvars"> Open platform.auto.tfvars 
 </walkthrough-editor-open-file>
 
-
 **Tip**: Click the highlighted text above to open the file on your cloudshell.
+
+You can find tfvars examples in the tfvars_examples folder.
 
 
 ## Step 2: Provide APPLICATION Inputs Parameters for Terraform
@@ -94,11 +95,12 @@ Refer [here](https://cloud.google.com/docs/terraform/resource-management/store-s
 
 ## Step 4: Configure Cloud Build Service Account
 
-Modify the ./cloudbuild.yaml file to provide an existing Service Account with permissions to deploy the infrastructure and workloads components.
-This service account is used by the Cloud Build service to create the environment.
-
-<walkthrough-editor-open-file filePath="./cloudbuild.yaml"> Open ./cloudbuild.yaml
-
+The Cloud Build service that orchestrates the environment creation requires a Service Account. Please run the following steps to create it and grant the roles required for deployment.
+```bash
+export PROJECT_ID=$(gcloud config get-value project)
+gcloud iam service-accounts create aiongke --display-name="AI on GKE Service Account"
+./iam/iam_policy.sh
+```
 
 
 ## Step 5: Run Terraform Apply using Cloud Build
@@ -110,7 +112,7 @@ To set your Cloud Platform project in this terminal session use:
 gcloud config set project [PROJECT_ID]
 ```
 
-Run the below command to submit cloudbuild job to deploy the resources:
+Run the below command to submit Cloud Build job to deploy the resources:
 ```bash
 
 ## Deploy Private GKE with Connect Gateway and deploy workloads
