@@ -1,5 +1,4 @@
 export PROJECT_ID=$(gcloud config get-value project)
-gcloud iam service-accounts create aiongke --display-name="AI ON GKE Service Account"
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
     --member=serviceAccount:aiongke@$PROJECT_ID.iam.gserviceaccount.com \

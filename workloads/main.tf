@@ -110,7 +110,6 @@ module "jupyterhub" {
   source           = "../modules/jupyterhub"
   depends_on       = [module.kuberay-cluster, module.prometheus, module.kubernetes-namespace, module.k8s_service_accounts]
   create_namespace = var.create_jupyterhub_namespace
-  namespace        = var.jupyterhub_namespace
-  # namespace        = var.create_jupyterhub_namespace == true ? var.jupyterhub_namespace : var.namespace  # Test this!
+  namespace        = var.create_jupyterhub_namespace == true ? var.jupyterhub_namespace : var.namespace
 }
 
