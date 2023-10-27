@@ -1,56 +1,63 @@
 steps:
 - id: Execute Platform Provision using Terraform to provision GKE 
   name: gcr.io/cloudshell-images/cloudshell:latest
+  env:
+    - "PLATFORM_VAR_FILE=${_PLATFORM_VAR_FILE}"
   script: |
       #!/usr/bin/env bash
-      if [[ -z $${_PLATFORM_VAR_FILE} ]]
+      if [[ -n ${PLATFORM_VAR_FILE} ]]
       then
         terraform -chdir="./platform/" init -no-color 
-        terraform -chdir="./platform/" apply -auto-approve -no-color -var-file ${_PLATFORM_VAR_FILE}
+        terraform -chdir="./platform/" apply -auto-approve -no-color -var-file $PLATFORM_VAR_FILE
       else
-        echo " _PLATFORM_VAR_FILE variable not found, skipping this step."
+        echo " PLATFORM_VAR_FILE variable not found, skipping this step."
       fi
 - id: Update authorised networks for restricted public cluster
   name: gcr.io/cloudshell-images/cloudshell:latest
+  env:
+    - "WORKLOADS_VAR_FILE=${_WORKLOADS_VAR_FILE}"
   script: |
       #!/usr/bin/env bash
-      if [[ -z $${_WORKLOADS_VAR_FILE} ]]
+      if [[ -n ${WORKLOADS_VAR_FILE} ]]
       then
         export SHELL_IP=`curl https://ipinfo.io/ip`
-        echo $$SHELL_IP
+        echo $SHELL_IP
 
-        export CLUSTERNAME=`cat ./workloads/${_WORKLOADS_VAR_FILE} | grep -w cluster_name | awk {'print $$NF'}| awk -F'["]' '{ print $$2 }'`
-        export LOCATION=`cat ./workloads/${_WORKLOADS_VAR_FILE} | grep -w cluster_location | awk {'print $$NF'}| awk -F'["]' '{ print $$2 }'`
-        export PROJECT=`cat ./workloads/${_WORKLOADS_VAR_FILE} | grep -w project_id | awk {'print $$NF'} | awk -F'["]' '{ print $$2 }'`
-        export ISPRIVATE=`gcloud container clusters describe  $$CLUSTERNAME --region $$REGION --format "value(privateClusterConfig.enablePrivateEndpoint)"`
+        export CLUSTERNAME=`cat ./workloads/${WORKLOADS_VAR_FILE} | grep -w cluster_name | awk {'print $NF'}| awk -F'["]' '{ print $2 }'`
+        export LOCATION=`cat ./workloads/${WORKLOADS_VAR_FILE} | grep -w cluster_location | awk {'print $NF'}| awk -F'["]' '{ print $2 }'`
+        export PROJECT=`cat ./workloads/${WORKLOADS_VAR_FILE} | grep -w project_id | awk {'print $NF'} | awk -F'["]' '{ print $2 }'`
+        export ISPRIVATE=`gcloud container clusters describe  $CLUSTERNAME --location $LOCATION --format "value(privateClusterConfig.enablePrivateEndpoint)"`
 
-        if [[ $$ISPRIVATE == "True" ]]
+        if [[ $ISPRIVATE == "True" ]]
         then 
           echo "GKE have private endpoint, consider enabling connect gateway!"
         else
-          export EXISTING_AUTH_NETS=`gcloud container clusters describe $$CLUSTERNAME --location $$LOCATION --project $$PROJECT --format "value[delimiter=','](masterAuthorizedNetworksConfig.cidrBlocks[].cidrBlock)"`
-          echo "$$SHELL_IP/32,$$EXISTING_AUTH_NETS"
-          gcloud container clusters update $$CLUSTERNAME --location $$LOCATION --project $$PROJECT --enable-master-authorized-networks --master-authorized-networks "$$SHELL_IP/32,$$EXISTING_AUTH_NETS"
-          gcloud container clusters get-credentials $$CLUSTERNAME --location $$LOCATION --project $$PROJECT
+          export EXISTING_AUTH_NETS=`gcloud container clusters describe $CLUSTERNAME --location $LOCATION --project $PROJECT --format "value[delimiter=','](masterAuthorizedNetworksConfig.cidrBlocks[].cidrBlock)"`
+          echo "$SHELL_IP/32,$EXISTING_AUTH_NETS"
+          gcloud container clusters update $CLUSTERNAME --location $LOCATION --project $PROJECT --enable-master-authorized-networks --master-authorized-networks "$SHELL_IP/32,$EXISTING_AUTH_NETS"
+          gcloud container clusters get-credentials $CLUSTERNAME --location $LOCATION --project $PROJECT
           kubectl get ns
         fi 
       else
-        echo " _WORKLOADS_VAR_FILE variable not found, skipping this step."
+        echo " WORKLOADS_VAR_FILE variable not found, skipping this step."
       fi
 - id: Deploy Workloads on provided platform GKE
   name: gcr.io/cloudshell-images/cloudshell:latest
+  env:
+    - "WORKLOADS_VAR_FILE=${_WORKLOADS_VAR_FILE}"
   script: |
       #!/usr/bin/env bash
-      if [[ -z $${_WORKLOADS_VAR_FILE} ]]
+      if [[ -n ${WORKLOADS_VAR_FILE} ]]
       then
         apt-get install google-cloud-sdk-gke-gcloud-auth-plugin -y
         terraform -chdir="./workloads/" init -no-color
-        terraform -chdir="./workloads/" apply -auto-approve -no-color -var-file ${_WORKLOADS_VAR_FILE}
+        terraform -chdir="./workloads/" apply -auto-approve -no-color -var-file ${WORKLOADS_VAR_FILE}
       else
-        echo " _WORKLOADS_VAR_FILE variable not found, skipping this step."
+        echo " WORKLOADS_VAR_FILE variable not found, skipping this step."
       fi
 serviceAccount: 'projects/$PROJECT_ID/serviceAccounts/aiongke@$PROJECT_ID.iam.gserviceaccount.com'
 options:
   logging: CLOUD_LOGGING_ONLY
   dynamicSubstitutions: true
   substitutionOption: 'ALLOW_LOOSE'
+
