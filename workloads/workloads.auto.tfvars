@@ -31,3 +31,6 @@ jupyterhub_namespace        = "myray" # If create_jupyterhub_namespace = false, 
 
 
 ## Triton variables
+create_triton               = false     # Default = false, creates Triton
+create_triton_namespace     = true     # Default = true, uses default triton namespace "triton". 
+triton_namespace            = "triton" # If create_triton_namespace = false, then keep this same as namespace (from GKE variables)

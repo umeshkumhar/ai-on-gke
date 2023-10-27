@@ -94,3 +94,21 @@ variable "create_ray" {
   description = "Enable creation of Ray on GKE"
   default = true
 }
+
+variable "create_triton" {
+  type = bool
+  description = "Enable creation of triton"
+  default = false
+}
+
+variable "create_triton_namespace" {
+  type = bool
+  description = "Enable creation of triton namespace if it does not exist"
+  default = true
+}
+
+variable "triton_namespace" {
+  type = string
+  description = "Triton Namespace of GKE"
+  default = "triton"
+}

@@ -15,7 +15,7 @@
 resource "google_service_account" "sa" {
   project      = "${var.project_id}"
   account_id   = "${var.service_account}"
-  display_name = "Managed prometheus service account"
+  display_name = "Terraform managed service account for ai-on-gke"
 }
 
 resource "google_service_account_iam_binding" "workload-identity-user" {
@@ -41,6 +41,7 @@ resource "kubernetes_annotations" "default" {
   kind        = "ServiceAccount"
   metadata {
     name = "default"
+    namespace = "${var.namespace}"
   }
   annotations = {
     "iam.gke.io/gcp-service-account" = "${google_service_account.sa.account_id}@${var.project_id}.iam.gserviceaccount.com"
