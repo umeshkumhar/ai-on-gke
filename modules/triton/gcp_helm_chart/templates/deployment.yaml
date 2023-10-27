@@ -47,13 +47,12 @@ spec:
         release: {{ .Release.Name }}
 
     spec:
+      nodeSelector:
+        cloud.google.com/gke-accelerator: "nvidia-tesla-t4"
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.imageName }}"
-          nodeSelector:
-              cloud.google.com/gke-accelerator: "nvidia-tesla-t4"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-
           resources:
             limits:
               nvidia.com/gpu: {{ .Values.image.numGpus }}

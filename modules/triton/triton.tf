@@ -23,12 +23,21 @@ resource "google_storage_bucket" "bucket" {
   project  = var.project_id
 }
 
+module "k8s_service_accounts" {
+  source          = "../service_accounts"
+  project_id      = var.project_id
+  namespace       = var.namespace
+  service_account = var.service_account
+  # depends_on      = [module.kubernetes-namespace]
+}
+
 resource "google_storage_bucket_iam_binding" "bucket-iam-binding" {
+  depends_on = [module.k8s_service_accounts]
   bucket = google_storage_bucket.bucket.name
-  role   = "roles/storage.objectViewer"
+  role   = "roles/storage.admin" # TODO: Update to a more finegrained permission
 
   members = [
-    "serviceAccount:${var.project_id}.svc.id.goog[${var.namespace}/default]",
+    "serviceAccount:${var.service_account}@${var.project_id}.iam.gserviceaccount.com",
   ]
 }
 
@@ -50,24 +59,14 @@ resource "null_resource" "upload_folder" {
   }
 }
 
-resource "kubernetes_annotations" "default" {
-  api_version = "v1"
-  kind        = "ServiceAccount"
-  metadata {
-    name = "default"
-    namespace = "${var.namespace}"
-  }
-  annotations = {
-    "iam.gke.io/gcp-service-account" = "${var.service_account_id}@${var.project_id}.iam.gserviceaccount.com"
-  }
-}
 
 resource "helm_release" "triton-inference-server" {
-  depends_on       = [null_resource.upload_folder]
+  depends_on       = [null_resource.upload_folder, google_storage_bucket_iam_binding.bucket-iam-binding]
   name             = var.helm_release_name
   namespace        = var.namespace
   create_namespace = var.create_namespace
   chart            = "./gcp_helm_chart"
+  timeout          = 600
   set {
     name  = "image.modelRepositoryPath"
     value = "gs://${google_storage_bucket.bucket.name}/${var.model_repository_folder_name}"
