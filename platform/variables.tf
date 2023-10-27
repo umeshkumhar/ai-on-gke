@@ -68,7 +68,7 @@ variable "private_cluster" {
 }
 
 variable "autopilot_cluster" {
-  type    = bool
+  type = bool
 }
 
 variable "cluster_regional" {

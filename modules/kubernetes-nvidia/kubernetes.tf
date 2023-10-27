@@ -13,11 +13,11 @@
 # limitations under the License.
 
 data "http" "nvidia_driver_installer_manifest" {
-    # url = "https://raw.githubusercontent.com/GoogleCloudPlatform/container-engine-accelerators/master/nvidia-driver-installer/cos/daemonset-preloaded.yaml"
-    url = "https://raw.githubusercontent.com/GoogleCloudPlatform/container-engine-accelerators/master/nvidia-driver-installer/cos/daemonset-preloaded-latest.yaml"
+  # url = "https://raw.githubusercontent.com/GoogleCloudPlatform/container-engine-accelerators/master/nvidia-driver-installer/cos/daemonset-preloaded.yaml"
+  url = "https://raw.githubusercontent.com/GoogleCloudPlatform/container-engine-accelerators/master/nvidia-driver-installer/cos/daemonset-preloaded-latest.yaml"
 }
 
 resource "kubectl_manifest" "nvidia_driver_installer" {
   yaml_body = data.http.nvidia_driver_installer_manifest.response_body
-  count = var.enable_tpu || var.enable_autopilot ? 0 : 1
+  count     = var.enable_tpu || var.enable_autopilot ? 0 : 1
 }

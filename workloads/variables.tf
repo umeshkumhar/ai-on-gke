@@ -38,12 +38,12 @@ variable "cluster_location" {
 }
 
 variable "cluster_membership_id" {
-  type = string
+  type    = string
   default = "none"
 }
 
- variable "kubeconfig_path" {
-  type = string
+variable "kubeconfig_path" {
+  type    = string
   default = "~/.kube/config"
 }
 
@@ -66,19 +66,19 @@ variable "enable_tpu" {
 }
 
 variable "create_jupyterhub" {
-  type = bool
+  type        = bool
   description = "Enable creation of jupyterhub"
-  default = true
+  default     = true
 }
 
 variable "create_jupyterhub_namespace" {
-  type = bool
+  type        = bool
   description = "Enable creation of jupyterhub namespace if it does not exist"
-  default = false
+  default     = false
 }
 
 variable "jupyterhub_namespace" {
-  type = string
+  type        = string
   description = "Jupyterub Namesapce of GKE"
   # default = myray
 }
@@ -90,25 +90,25 @@ variable "enable_autopilot" {
 }
 
 variable "create_ray" {
-  type = bool
+  type        = bool
   description = "Enable creation of Ray on GKE"
-  default = true
+  default     = true
 }
 
 variable "create_triton" {
-  type = bool
+  type        = bool
   description = "Enable creation of triton"
-  default = false
+  default     = false
 }
 
 variable "create_triton_namespace" {
-  type = bool
+  type        = bool
   description = "Enable creation of triton namespace if it does not exist"
-  default = true
+  default     = true
 }
 
 variable "triton_namespace" {
-  type = string
+  type        = string
   description = "Triton Namespace of GKE"
-  default = "triton"
+  default     = "triton"
 }
