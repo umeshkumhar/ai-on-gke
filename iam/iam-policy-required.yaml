@@ -25,6 +25,9 @@ bindings:
   role: roles/storage.objectAdmin
 - members:
   - serviceAccount:aiongke@PROJECTNAME.iam.gserviceaccount.com
+  role: roles/cloudbuild.builds.builder
+- members:
+  - serviceAccount:aiongke@PROJECTNAME.iam.gserviceaccount.com
   role: roles/gkehub.gatewayAdmin
 - members:
   - serviceAccount:aiongke@PROJECTNAME.iam.gserviceaccount.com
