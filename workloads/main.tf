@@ -61,6 +61,7 @@ provider "helm" {
 }
 
 module "kuberay-operator" {
+  count      = var.create_ray == true ? 1 : 0
   source       = "../modules/kuberay-operator"
   region       = var.region
   cluster_name = var.cluster_name
@@ -89,6 +90,7 @@ module "k8s_service_accounts" {
 }
 
 module "kuberay-cluster" {
+  count      = var.create_ray == true ? 1 : 0
   source     = "../modules/kuberay-cluster"
   depends_on = [module.kubernetes-namespace]
   namespace  = var.namespace
@@ -96,6 +98,7 @@ module "kuberay-cluster" {
 }
 
 module "prometheus" {
+  count      = var.create_ray == true ? 1 : 0
   source     = "../modules/prometheus"
   depends_on = [module.kuberay-cluster]
   project_id = var.project_id
@@ -107,7 +110,7 @@ module "jupyterhub" {
   source           = "../modules/jupyterhub"
   depends_on       = [module.kuberay-cluster, module.prometheus, module.kubernetes-namespace, module.k8s_service_accounts]
   create_namespace = var.create_jupyterhub_namespace
-  namespace        = var.jupyterhub_namespace
+  namespace        = var.create_jupyterhub_namespace == true ? var.jupyterhub_namespace : var.namespace
 }
 
 module "triton" {

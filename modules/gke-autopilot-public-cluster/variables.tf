@@ -25,10 +25,6 @@ variable "region" {
 }
 
 ## network variables
-variable "create_network" {
-  type = bool
-}
-
 variable "network_name" {
   type = string
 }
@@ -37,40 +33,7 @@ variable "subnetwork_name" {
   type = string
 }
 
-variable "subnetwork_cidr" {
-  type = string
-}
-
-variable "subnetwork_region" {
-  type = string
-}
-
-variable "subnetwork_private_access" {
-  type = string
-}
-
-variable "subnetwork_description" {
-  type = string
-}
-
-variable "network_secondary_ranges" {
-  type = map(list(object({ range_name = string, ip_cidr_range = string })))
-}
-
 ## GKE variables
-variable "create_cluster" {
-  type = bool
-}
-
-variable "private_cluster" {
-  type    = bool
-  default = true
-}
-
-variable "autopilot_cluster" {
-  type    = bool
-}
-
 variable "cluster_regional" {
   type = bool
 }
@@ -80,8 +43,7 @@ variable "cluster_name" {
 }
 
 variable "kubernetes_version" {
-  type    = string
-  default = "latest"
+  type = string
 }
 
 variable "cluster_region" {
@@ -97,51 +59,11 @@ variable "ip_range_pods" {
 variable "ip_range_services" {
   type = string
 }
-variable "monitoring_enable_managed_prometheus" {
-  type    = bool
-  default = false
-}
 
 variable "master_authorized_networks" {
   type = list(object({
     cidr_block   = string
-    display_name = optional(string)
+    display_name = string
   }))
   default = []
-}
-
-variable "all_node_pools_oauth_scopes" {
-  type = list(string)
-}
-variable "all_node_pools_labels" {
-  type = map(string)
-}
-variable "all_node_pools_metadata" {
-  type = map(string)
-}
-variable "all_node_pools_tags" {
-  type = list(string)
-}
-
-variable "enable_tpu" {
-  type        = bool
-  description = "Set to true to create TPU node pool"
-  default     = false
-}
-variable "enable_gpu" {
-  type        = bool
-  description = "Set to true to create TPU node pool"
-  default     = true
-}
-
-variable "cpu_pools" {
-  type = list(map(any))
-}
-
-variable "gpu_pools" {
-  type = list(map(any))
-}
-
-variable "tpu_pools" {
-  type = list(map(any))
 }

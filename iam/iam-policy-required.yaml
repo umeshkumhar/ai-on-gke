@@ -1,0 +1,34 @@
+bindings:
+- members:
+  - serviceAccount:aiongke@PROJECTNAME.iam.gserviceaccount.com
+  role: roles/container.admin
+- members:
+  - serviceAccount:aiongke@PROJECTNAME.iam.gserviceaccount.com
+  role: roles/compute.networkAdmin
+- members:
+  - serviceAccount:aiongke@PROJECTNAME.iam.gserviceaccount.com
+  role: roles/resourcemanager.projectIamAdmin
+- members:
+  - serviceAccount:aiongke@PROJECTNAME.iam.gserviceaccount.com
+  role: roles/iam.serviceAccountAdmin
+- members:
+  - serviceAccount:aiongke@PROJECTNAME.iam.gserviceaccount.com
+  role: roles/iam.serviceAccountUser
+- members:
+  - serviceAccount:aiongke@PROJECTNAME.iam.gserviceaccount.com
+  role: roles/gkehub.admin
+- members:
+  - serviceAccount:aiongke@PROJECTNAME.iam.gserviceaccount.com
+  role: roles/compute.storageAdmin
+- members:
+  - serviceAccount:aiongke@PROJECTNAME.iam.gserviceaccount.com
+  role: roles/storage.objectAdmin
+- members:
+  - serviceAccount:aiongke@PROJECTNAME.iam.gserviceaccount.com
+  role: roles/cloudbuild.builds.builder
+- members:
+  - serviceAccount:aiongke@PROJECTNAME.iam.gserviceaccount.com
+  role: roles/gkehub.gatewayAdmin
+- members:
+  - serviceAccount:aiongke@PROJECTNAME.iam.gserviceaccount.com
+  role: roles/logging.logWriter
