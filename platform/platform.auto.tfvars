@@ -5,9 +5,11 @@ project_id = "umeshkumhar"
 ####    PLATFORM
 #######################################################
 ## network values
-create_network            = true
-network_name              = "demo-network-1"
-subnetwork_name           = "subnet-02"
+create_network  = true
+network_name    = "demo-network-1"
+subnetwork_name = "subnet-02"
+
+## required only in case new network provisioning
 subnetwork_cidr           = "10.100.0.0/16"
 subnetwork_region         = "us-central1"
 subnetwork_private_access = "true"
@@ -27,7 +29,8 @@ network_secondary_ranges = {
 
 ## gke variables
 create_cluster                       = true
-private_cluster                      = true
+private_cluster                      = true ## provide flag to create private or public cluster
+autopilot_cluster                    = true ## provide flag to create standard or autopilot cluster
 cluster_name                         = "demo-cluster1"
 kubernetes_version                   = "1.27"
 cluster_regional                     = true
@@ -41,6 +44,7 @@ master_authorized_networks = [{
   display_name = "VPC"
 }]
 
+## Node configuration are ignored for autopilot clusters
 cpu_pools = [{
   name                   = "cpu-pool"
   machine_type           = "n1-standard-16"

@@ -39,6 +39,7 @@ variable "cluster_location" {
 
 variable "cluster_membership_id" {
   type = string
+  default = "none"
 }
 
  variable "kubeconfig_path" {

@@ -20,3 +20,7 @@
 terraform.tfstate*
 .terraform*
 *code-workspace*
+*delete*
+*factory*
+*scripts*
+*backend.tf*

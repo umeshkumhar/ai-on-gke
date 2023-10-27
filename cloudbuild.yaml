@@ -19,19 +19,19 @@ steps:
         export SHELL_IP=`curl https://ipinfo.io/ip`
         echo $$SHELL_IP
 
-        export CLUSTERNAME=`cat ./platform/${_WORKLOADS_VAR_FILE} | grep -w cluster_name | awk {'print $$NF'}| awk -F'["]' '{ print $$2 }'`
-        export REGION=`cat ./platform/${_WORKLOADS_VAR_FILE} | grep -w cluster_region | awk {'print $$NF'}| awk -F'["]' '{ print $$2 }'`
-        export PROJECT=`cat ./platform/${_WORKLOADS_VAR_FILE} | grep -w project_id | awk {'print $$NF'} | awk -F'["]' '{ print $$2 }'`
+        export CLUSTERNAME=`cat ./workloads/${_WORKLOADS_VAR_FILE} | grep -w cluster_name | awk {'print $$NF'}| awk -F'["]' '{ print $$2 }'`
+        export LOCATION=`cat ./workloads/${_WORKLOADS_VAR_FILE} | grep -w cluster_location | awk {'print $$NF'}| awk -F'["]' '{ print $$2 }'`
+        export PROJECT=`cat ./workloads/${_WORKLOADS_VAR_FILE} | grep -w project_id | awk {'print $$NF'} | awk -F'["]' '{ print $$2 }'`
         export ISPRIVATE=`gcloud container clusters describe  $$CLUSTERNAME --region $$REGION --format "value(privateClusterConfig.enablePrivateEndpoint)"`
 
         if [[ $$ISPRIVATE == "True" ]]
         then 
           echo "GKE have private endpoint, consider enabling connect gateway!"
         else
-          export EXISTING_AUTH_NETS=`gcloud container clusters describe $$CLUSTERNAME --location $$REGION --project $$PROJECT --format "value[delimiter=','](masterAuthorizedNetworksConfig.cidrBlocks[].cidrBlock)"`
+          export EXISTING_AUTH_NETS=`gcloud container clusters describe $$CLUSTERNAME --location $$LOCATION --project $$PROJECT --format "value[delimiter=','](masterAuthorizedNetworksConfig.cidrBlocks[].cidrBlock)"`
           echo "$$SHELL_IP/32,$$EXISTING_AUTH_NETS"
-          gcloud container clusters update $$CLUSTERNAME --location $$REGION --project $$PROJECT --enable-master-authorized-networks --master-authorized-networks "$$SHELL_IP/32,$$EXISTING_AUTH_NETS"
-          gcloud container clusters get-credentials $$CLUSTERNAME --region $$REGION --project $$PROJECT
+          gcloud container clusters update $$CLUSTERNAME --location $$LOCATION --project $$PROJECT --enable-master-authorized-networks --master-authorized-networks "$$SHELL_IP/32,$$EXISTING_AUTH_NETS"
+          gcloud container clusters get-credentials $$CLUSTERNAME --location $$LOCATION --project $$PROJECT
           kubectl get ns
         fi 
       else

@@ -1,16 +1,16 @@
 
 ##common variables  
 ## Need to pull this variables from tf output from previous platform stage
-project_id = "ai-sandbox-5"
+project_id = "umeshkumhar"
 region     = "us-central1"
 
 ## this is required for terraform to connect to GKE master and deploy workloads
-cluster_name   = "demo-cluster-4"
+cluster_name   = "demo-cluster1"
 cluster_location = "us-central1"
-
+enable_autopilot = true    # If false, creates GKE standard cluster # Needed to install or not nvidia driver # If = true, functionality not created yet.
 # If private cluster used will use connect gateway to connect GKE master
-private_cluster = false
-cluster_membership_id = "demo-cluster-2-us-central1"  # Used for private cluster only
+private_cluster = true
+cluster_membership_id = "demo-cluster1-us-central1"  # Used for private cluster only
 
 #######################################################
 ####    APPLICATIONS
@@ -18,9 +18,8 @@ cluster_membership_id = "demo-cluster-2-us-central1"  # Used for private cluster
 
 ## GKE environment variables
 namespace       = "myray"
-service_account = "myray-system-account"
+service_account = "myray-system-account1"
 enable_tpu      = false
-enable_autopilot = false    # If false, creates GKE standard cluster # Needed to install or not nvidia driver # If = true, functionality not created yet.
 
 ## Ray variables
 create_ray       = true  

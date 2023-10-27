@@ -33,9 +33,9 @@ locals {
   subnetwork_name = var.create_network ? module.custom-network[0].subnets_names[0] : var.subnetwork_name
 }
 
-## create public GKE
+## create public GKE standard
 module "public-gke-standard-cluster" {
-  count      = var.create_cluster && !var.private_cluster ? 1 : 0
+  count      = var.create_cluster && !var.private_cluster && !var.autopilot_cluster ? 1 : 0
   source     = "../modules/gke-standard-public-cluster"
   project_id = var.project_id
 
@@ -66,9 +66,30 @@ module "public-gke-standard-cluster" {
   all_node_pools_tags         = var.all_node_pools_tags
 }
 
-## create private GKE
+## create public GKE autopilot
+module "public-gke-autopilot-cluster" {
+  count      = var.create_cluster && !var.private_cluster && var.autopilot_cluster ? 1 : 0
+  source     = "../modules/gke-autopilot-public-cluster"
+  project_id = var.project_id
+
+  ## network values
+  network_name    = local.network_name
+  subnetwork_name = local.subnetwork_name
+
+  ## gke variables
+  cluster_regional           = var.cluster_regional
+  cluster_name               = var.cluster_name
+  kubernetes_version         = var.kubernetes_version
+  cluster_region             = var.cluster_region
+  cluster_zones              = var.cluster_zones
+  ip_range_pods              = var.ip_range_pods
+  ip_range_services          = var.ip_range_services
+  master_authorized_networks = var.master_authorized_networks
+}
+
+## create private GKE standard
 module "private-gke-standard-cluster" {
-  count      = var.create_cluster && var.private_cluster ? 1 : 0
+  count      = var.create_cluster && var.private_cluster && !var.autopilot_cluster ? 1 : 0
   source     = "../modules/gke-standard-private-cluster"
   project_id = var.project_id
 
@@ -97,6 +118,27 @@ module "private-gke-standard-cluster" {
   all_node_pools_labels       = var.all_node_pools_labels
   all_node_pools_metadata     = var.all_node_pools_metadata
   all_node_pools_tags         = var.all_node_pools_tags
+}
+
+## create private GKE autopilot
+module "private-gke-autopilot-cluster" {
+  count      = var.create_cluster && var.private_cluster && var.autopilot_cluster ? 1 : 0
+  source     = "../modules/gke-autopilot-private-cluster"
+  project_id = var.project_id
+
+  ## network values
+  network_name    = local.network_name
+  subnetwork_name = local.subnetwork_name
+
+  ## gke variables
+  cluster_regional           = var.cluster_regional
+  cluster_name               = var.cluster_name
+  kubernetes_version         = var.kubernetes_version
+  cluster_region             = var.cluster_region
+  cluster_zones              = var.cluster_zones
+  ip_range_pods              = var.ip_range_pods
+  ip_range_services          = var.ip_range_services
+  master_authorized_networks = var.master_authorized_networks
 }
 
 
