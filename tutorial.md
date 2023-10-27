@@ -6,7 +6,7 @@ This guide will show you how to prepare GKE cluster and install the AI applicati
 
 Add more summary here
 
-**Time to complete**: About 20 minutes
+**Time to complete**: About 30 minutes
 
 **Prerequisites**: A Cloud Billing account
 
@@ -14,11 +14,18 @@ Click the **Continue** button to move to the next step.
 
 ## What is AI-on-GKE
 
-The AI-on-GKE provides Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.
+The AI-on-GKE provides <<COMPLETE THIS>>
 
 
 
 Next, you'll provide inputs parameters and launch a AI-on-GKE tutorial.
+
+## Step 0: Set your project
+To set your Cloud Platform project in this terminal session use:
+```bash
+gcloud config set project [PROJECT_ID]
+```
+In this project, the tutorial resources will be created
 
 ## Step 1: Provide PLATFORM Inputs Parameters for Terraform
 
@@ -107,14 +114,16 @@ gcloud iam service-accounts create aiongke --display-name="AI on GKE Service Acc
 
 You are ready to deploy your resources now! `cloudbuild.yaml` is already prepared with all the steps requires to deploy the application. 
 
-To set your Cloud Platform project in this terminal session use:
+Run the below command to submit Cloud Build job to deploy the resources:
+
+
 ```bash
-gcloud config set project [PROJECT_ID]
+## Deploy AI on GKE with the provided inputs
+gcloud beta builds submit --config=cloudbuild.yaml
 ```
 
-Run the below command to submit Cloud Build job to deploy the resources:
+<!-- 
 ```bash
-
 ## Deploy Private GKE with Connect Gateway and deploy workloads
 gcloud beta builds submit --config=cloudbuild.yaml --substitutions=_PLATFORM_VAR_FILE="private-standard-gke-with-new-network.platform.tfvars",_WORKLOADS_VAR_FILE="private-gke-workloads.tfvars"
 ```
@@ -123,9 +132,23 @@ gcloud beta builds submit --config=cloudbuild.yaml --substitutions=_PLATFORM_VAR
 ## Deploy Public GKE with Authorised Networks and deploy workloads
 gcloud beta builds submit --config=cloudbuild.yaml --substitutions=_PLATFORM_VAR_FILE="public-standard-gke-with-new-network.platform.tfvars",_WORKLOADS_VAR_FILE="public-gke-workloads.tfvars"
 
-```
+``` -->
 
 Monitor the terminal for the log link and status for cloud build jobs.
+
+## Step 6: [Optional] Delete resources created
+
+You can now delete the resources
+
+
+```bash
+## Deploy AI on GKE with the provided inputs
+gcloud beta builds submit --config=cloudbuild_delete.yaml
+```
+
+
+Monitor the terminal for the log link and status for cloud build jobs.
+
 
 ## Congratulations
 
