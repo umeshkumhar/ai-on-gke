@@ -21,7 +21,7 @@ region     = "us-central1"
 ## this is required for terraform to connect to GKE master and deploy workloads
 cluster_name     = "demo-cluster1"
 cluster_location = "us-central1"
-enable_autopilot = true # If false, creates GKE standard cluster # Needed to install or not nvidia driver # If = true, functionality not created yet.
+enable_autopilot = false # If false, creates GKE standard cluster # Needed to install or not nvidia driver # If = true, functionality not created yet.
 # If private cluster used will use connect gateway to connect GKE master
 private_cluster       = true
 cluster_membership_id = "demo-cluster1-us-central1" # Used for private cluster only
