@@ -44,7 +44,7 @@ network_secondary_ranges = {
 ## gke variables
 create_cluster                       = true
 private_cluster                      = true ## provide flag to create private or public cluster
-autopilot_cluster                    = true ## provide flag to create standard or autopilot cluster
+autopilot_cluster                    = false ## provide flag to create standard or autopilot cluster
 cluster_name                         = "demo-cluster1"
 kubernetes_version                   = "1.27"
 cluster_regional                     = true

@@ -91,13 +91,13 @@ module "kubernetes-nvidia" {
 module "kubernetes-namespace" {
   source     = "../modules/kubernetes-namespace"
   depends_on = [module.kubernetes-nvidia, module.kuberay-operator]
-  namespace  = var.namespace
+  namespace  = var.ray_namespace
 }
 
 module "k8s_service_accounts" {
   source          = "../modules/service_accounts"
   project_id      = var.project_id
-  namespace       = var.namespace
+  namespace       = var.ray_namespace
   service_account = var.service_account
   depends_on      = [module.kubernetes-namespace]
 }
@@ -106,7 +106,7 @@ module "kuberay-cluster" {
   count      = var.create_ray == true ? 1 : 0
   source     = "../modules/kuberay-cluster"
   depends_on = [module.kubernetes-namespace]
-  namespace  = var.namespace
+  namespace  = var.ray_namespace
   enable_tpu = var.enable_tpu
 }
 
@@ -115,7 +115,7 @@ module "prometheus" {
   source     = "../modules/prometheus"
   depends_on = [module.kuberay-cluster]
   project_id = var.project_id
-  namespace  = var.namespace
+  namespace  = var.ray_namespace
 }
 
 module "jupyterhub" {
@@ -123,7 +123,7 @@ module "jupyterhub" {
   source           = "../modules/jupyterhub"
   depends_on       = [module.kuberay-cluster, module.prometheus, module.kubernetes-namespace, module.k8s_service_accounts]
   create_namespace = var.create_jupyterhub_namespace
-  namespace        = var.create_jupyterhub_namespace == true ? var.jupyterhub_namespace : var.namespace
+  namespace        = var.create_jupyterhub_namespace == true ? var.jupyterhub_namespace : var.ray_namespace
 }
 
 module "triton" {

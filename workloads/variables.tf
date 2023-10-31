@@ -47,7 +47,7 @@ variable "kubeconfig_path" {
   default = "~/.kube/config"
 }
 
-variable "namespace" {
+variable "ray_namespace" {
   type        = string
   description = "Kubernetes namespace where resources are deployed"
   default     = "myray"

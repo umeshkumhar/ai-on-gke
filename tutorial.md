@@ -29,9 +29,9 @@ In this project, the tutorial resources will be created
 
 ## Step 1: Provide PLATFORM Inputs Parameters for Terraform
 
-Here on step 1 you need to update the PLATFORM terraform tfvars file (located in ./platform/platform.auto.tfvars) to provide the input parameters to allow terraform code execution to provision GKE resource. Thise will include the inputs parameters in form of key value pairs. Update the values as per your requirements.
+Here on step 1 you need to update the PLATFORM terraform tfvars file (located in ./platform/platform.tfvars) to provide the input parameters to allow terraform code execution to provision GKE resource. Thise will include the inputs parameters in form of key value pairs. Update the values as per your requirements.
 
-<walkthrough-editor-open-file filePath="./platform/platform.auto.tfvars"> Open platform.auto.tfvars 
+<walkthrough-editor-open-file filePath="./platform/platform.tfvars"> Open platform.tfvars 
 </walkthrough-editor-open-file>
 
 **Tip**: Click the highlighted text above to open the file on your cloudshell.
@@ -41,9 +41,9 @@ You can find tfvars examples in the tfvars_examples folder.
 
 ## Step 2: Provide APPLICATION Inputs Parameters for Terraform
 
-Here on step 1 you need to update the APPLICATION terraform tfvars file (located in ./workloads/workloads.auto.tfvars) to provide the input parameters to allow terraform code execution to provision the APPLICATION WORKLOADS. Thise will include the inputs parameters in form of key value pairs. Update the values as per your requirements.
+Here on step 1 you need to update the APPLICATION terraform tfvars file (located in ./workloads/workloads.tfvars) to provide the input parameters to allow terraform code execution to provision the APPLICATION WORKLOADS. Thise will include the inputs parameters in form of key value pairs. Update the values as per your requirements.
 
-<walkthrough-editor-open-file filePath="./workloads/workloads.auto.tfvars"> Open workloads.auto.tfvars
+<walkthrough-editor-open-file filePath="./workloads/workloads.tfvars"> Open workloads.tfvars
 </walkthrough-editor-open-file>
 
 
@@ -118,8 +118,7 @@ Run the below command to submit Cloud Build job to deploy the resources:
 
 
 ```bash
-## Deploy AI on GKE with the provided inputs
-gcloud beta builds submit --config=cloudbuild.yaml
+gcloud beta builds submit --config=cloudbuild.yaml --substitutions=_PLATFORM_VAR_FILE="platform.tfvars",_WORKLOADS_VAR_FILE="workloads.tfvars"
 ```
 
 <!-- 
@@ -142,7 +141,6 @@ You can now delete the resources
 
 
 ```bash
-## Deploy AI on GKE with the provided inputs
 gcloud beta builds submit --config=cloudbuild_delete.yaml
 ```
 

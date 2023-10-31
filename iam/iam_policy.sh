@@ -53,3 +53,7 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 gcloud projects add-iam-policy-binding $PROJECT_ID \
     --member=serviceAccount:aiongke@$PROJECT_ID.iam.gserviceaccount.com \
     --role=roles/logging.logWriter
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+    --member=serviceAccount:aiongke@$PROJECT_ID.iam.gserviceaccount.com \
+    --role=roles/serviceusage.serviceUsageConsumer
