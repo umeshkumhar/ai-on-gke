@@ -4,13 +4,11 @@ Welcome to the Cloudshell tutorial for AI on GKE!
 
 This guide will show you how to prepare GKE cluster and install the AI applications on GKE. It'll also walk you through the files that needs your inputs and commands that will complete the tutorial.
 
-Add more summary here
-
 **Time to complete**: About 30 minutes
 
 **Prerequisites**: A Cloud Billing account
 
-Click the **Continue** button to move to the next step.
+Click the **START** button to move to the next step.
 
 ## What is AI-on-GKE
 
@@ -34,6 +32,8 @@ Here on step 1 you need to update the PLATFORM terraform tfvars file (located in
 <walkthrough-editor-open-file filePath="./platform/platform.tfvars"> Open platform.tfvars 
 </walkthrough-editor-open-file>
 
+Update `project_id` and review the other default values.
+
 **Tip**: Click the highlighted text above to open the file on your cloudshell.
 
 You can find tfvars examples in the tfvars_examples folder.
@@ -46,6 +46,7 @@ Here on step 1 you need to update the APPLICATION terraform tfvars file (located
 <walkthrough-editor-open-file filePath="./workloads/workloads.tfvars"> Open workloads.tfvars
 </walkthrough-editor-open-file>
 
+Update `project_id` and review the other default values.
 
 **Tip**: Click the highlighted text above to open the file on your cloudshell.
 

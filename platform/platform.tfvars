@@ -13,14 +13,14 @@
 # limitations under the License.
 
 ##common variables
-project_id = "ai-sandbox-7"
+project_id = "ai-on-gke-jss-sandbox"
 
 #######################################################
 ####    PLATFORM
 #######################################################
 ## network values
 create_network  = true
-network_name    = "demo-network-1"
+network_name    = "ml-network-1"
 subnetwork_name = "subnet-02"
 
 ## required only in case new network provisioning
@@ -43,9 +43,9 @@ network_secondary_ranges = {
 
 ## gke variables
 create_cluster                       = true
-private_cluster                      = true ## provide flag to create private or public cluster
+private_cluster                      = true ## Default true. Use false for a public cluster
 autopilot_cluster                    = false ## provide flag to create standard or autopilot cluster
-cluster_name                         = "demo-cluster1"
+cluster_name                         = "ml-cluster1"
 kubernetes_version                   = "1.27"
 cluster_regional                     = true
 cluster_region                       = "us-central1"

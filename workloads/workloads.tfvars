@@ -15,16 +15,16 @@
 
 ##common variables  
 ## Need to pull this variables from tf output from previous platform stage
-project_id = "ai-sandbox-7"
+project_id = "ai-on-gke-jss-sandbox"
 region     = "us-central1"
 
 ## this is required for terraform to connect to GKE master and deploy workloads
-cluster_name     = "demo-cluster1"
+cluster_name     = "ml-cluster1"
 cluster_location = "us-central1"
 enable_autopilot = false # If false, creates GKE standard cluster # Needed to install or not nvidia driver # If = true, functionality not created yet.
 # If private cluster used will use connect gateway to connect GKE master
 private_cluster       = true
-cluster_membership_id = "demo-cluster1-us-central1" # Used for private cluster only
+cluster_membership_id = "ml-cluster1-us-central1" # Used for private cluster only
 
 #######################################################
 ####    APPLICATIONS
