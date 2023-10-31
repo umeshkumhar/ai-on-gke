@@ -118,8 +118,7 @@ Run the below command to submit Cloud Build job to deploy the resources:
 
 
 ```bash
-## Deploy AI on GKE with the provided inputs
-gcloud beta builds submit --config=cloudbuild.yaml --substitutions=_PLATFORM_VAR_FILE="platform.vars",_WORKLOADS_VAR_FILE="workloads.tfvars"
+gcloud beta builds submit --config=cloudbuild.yaml --substitutions=_PLATFORM_VAR_FILE="platform.tfvars",_WORKLOADS_VAR_FILE="workloads.tfvars"
 ```
 
 <!-- 
@@ -142,7 +141,6 @@ You can now delete the resources
 
 
 ```bash
-## Deploy AI on GKE with the provided inputs
 gcloud beta builds submit --config=cloudbuild_delete.yaml
 ```
 

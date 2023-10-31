@@ -81,7 +81,6 @@ module "kuberay-operator" {
 }
 
 module "kubernetes-nvidia" {
-  # count        = var.private_cluster  == true ? 0 : 0
   source           = "../modules/kubernetes-nvidia"
   region           = var.region
   cluster_name     = var.cluster_name

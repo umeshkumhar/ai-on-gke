@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-terraform {
- backend "gcs" {
-    bucket  = "ai7-tfstate"
-    prefix  = "terraform/ai-on-gke/workloads"
- }
-}
+# terraform {
+#   backend "gcs" {
+#     bucket = "BUCKET_NAME"
+#     prefix = "terraform/state/workloads"
+#   }
+# }
