@@ -15,6 +15,6 @@
 terraform {
  backend "gcs" {
     bucket  = "ai7-tfstate"
-    prefix  = "terraform/ai-on-gke/worklaods"
+    prefix  = "terraform/ai-on-gke/workloads"
  }
 }

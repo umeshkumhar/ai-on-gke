@@ -31,7 +31,7 @@ cluster_membership_id = "demo-cluster1-us-central1" # Used for private cluster o
 #######################################################
 
 ## GKE environment variables
-namespace       = "myray"
+ray_namespace       = "myray"
 service_account = "myray-system-account1"
 enable_tpu      = false
 
