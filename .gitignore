@@ -21,4 +21,3 @@ terraform.tfstate*
 *delete*
 *factory*
 *scripts*
-*backend.tf*
