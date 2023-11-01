@@ -31,8 +31,8 @@ cluster_membership_id = "ml-cluster1-us-central1" # Used for private cluster onl
 #######################################################
 
 ## GKE environment variables
-ray_namespace       = "myray"
-service_account = "myray-system-account1"
+ray_namespace   = "myray"
+service_account = "myray-system-account"
 enable_tpu      = false
 
 ## Ray variables

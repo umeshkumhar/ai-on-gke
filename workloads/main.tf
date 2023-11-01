@@ -32,18 +32,18 @@ data "google_container_cluster" "default" {
   location = var.cluster_location
 }
 
-provider "kubectl" {
-  host                   = var.private_cluster ? "https://connectgateway.googleapis.com/v1/projects/${data.google_project.project.number}/locations/global/gkeMemberships/${var.cluster_membership_id}" : "https://${data.google_container_cluster.default.endpoint}"
-  token                  = var.private_cluster ? "" : data.google_client_config.default.access_token
-  cluster_ca_certificate = var.private_cluster ? "" : base64decode(data.google_container_cluster.default.master_auth[0].cluster_ca_certificate)
-  dynamic "exec" {
-    for_each = var.private_cluster ? [1] : []
-    content {
-      api_version = "client.authentication.k8s.io/v1beta1"
-      command     = "gke-gcloud-auth-plugin"
-    }
-  }
-}
+# provider "kubectl" {
+#   host                   = var.private_cluster ? "https://connectgateway.googleapis.com/v1/projects/${data.google_project.project.number}/locations/global/gkeMemberships/${var.cluster_membership_id}" : "https://${data.google_container_cluster.default.endpoint}"
+#   token                  = var.private_cluster ? "" : data.google_client_config.default.access_token
+#   cluster_ca_certificate = var.private_cluster ? "" : base64decode(data.google_container_cluster.default.master_auth[0].cluster_ca_certificate)
+#   dynamic "exec" {
+#     for_each = var.private_cluster ? [1] : []
+#     content {
+#       api_version = "client.authentication.k8s.io/v1beta1"
+#       command     = "gke-gcloud-auth-plugin"
+#     }
+#   }
+# }
 
 provider "kubernetes" {
   host                   = var.private_cluster ? "https://connectgateway.googleapis.com/v1/projects/${data.google_project.project.number}/locations/global/gkeMemberships/${var.cluster_membership_id}" : "https://${data.google_container_cluster.default.endpoint}"
