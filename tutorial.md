@@ -122,18 +122,6 @@ Run the below command to submit Cloud Build job to deploy the resources:
 gcloud beta builds submit --config=cloudbuild.yaml --substitutions=_PLATFORM_VAR_FILE="platform.tfvars",_WORKLOADS_VAR_FILE="workloads.tfvars"
 ```
 
-<!-- 
-```bash
-## Deploy Private GKE with Connect Gateway and deploy workloads
-gcloud beta builds submit --config=cloudbuild.yaml --substitutions=_PLATFORM_VAR_FILE="private-standard-gke-with-new-network.platform.tfvars",_WORKLOADS_VAR_FILE="private-gke-workloads.tfvars"
-```
-
-```bash
-## Deploy Public GKE with Authorised Networks and deploy workloads
-gcloud beta builds submit --config=cloudbuild.yaml --substitutions=_PLATFORM_VAR_FILE="public-standard-gke-with-new-network.platform.tfvars",_WORKLOADS_VAR_FILE="public-gke-workloads.tfvars"
-
-``` -->
-
 Monitor the terminal for the log link and status for cloud build jobs.
 
 ## Step 6: [Optional] Delete resources created
@@ -142,7 +130,7 @@ You can now delete the resources
 
 
 ```bash
-gcloud beta builds submit --config=cloudbuild_delete.yaml
+gcloud beta builds submit --config=cloudbuild_delete.yaml  --substitutions=_PLATFORM_VAR_FILE="platform.tfvars",_WORKLOADS_VAR_FILE="workloads.tfvars"
 ```
 
 
