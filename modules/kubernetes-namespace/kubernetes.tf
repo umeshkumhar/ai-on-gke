@@ -30,5 +30,6 @@ resource "kubernetes_namespace" "ml" {
 resource "kubernetes_manifest" "manifests" {
   for_each = fileset("${path.module}/config/", "*.yaml")
   manifest = yamldecode(templatefile("${path.module}/config/${each.value}", { namespace: var.namespace}))
+  depends_on = [kubernetes_namespace.ml]
 }
 

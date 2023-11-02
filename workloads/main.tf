@@ -113,7 +113,7 @@ module "kuberay-cluster" {
 module "prometheus" {
   count      = var.create_ray == true ? 1 : 0
   source     = "../modules/prometheus"
-  depends_on = [module.kuberay-cluster]
+  depends_on = [module.kuberay-cluster,  module.kubernetes-namespace]
   project_id = var.project_id
   namespace  = var.ray_namespace
 }

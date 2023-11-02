@@ -1,0 +1,30 @@
+steps:
+- id: Destroy AI on GKE provisioned resources
+  name: gcr.io/cloudshell-images/cloudshell:latest
+  env:
+    - "PLATFORM_VAR_FILE=${_PLATFORM_VAR_FILE}"
+    - "WORKLOADS_VAR_FILE=${_WORKLOADS_VAR_FILE}"
+  script: |
+      #!/usr/bin/env bash
+      if [ -n ${PLATFORM_VAR_FILE} ] && [ -n ${WORKLOADS_VAR_FILE} ]
+      then
+        echo "Variables set OK!"
+        if [ -f ./platform/${PLATFORM_VAR_FILE} ] && [ -f ./workloads/${WORKLOADS_VAR_FILE} ]
+        then
+          echo "Variables files found! Destroying..."
+          apt-get install google-cloud-sdk-gke-gcloud-auth-plugin -y
+          terraform -chdir="./workloads/" init -no-color
+          terraform -chdir="./workloads/" destroy  -auto-approve -no-color -var-file ${WORKLOADS_VAR_FILE}
+          terraform -chdir="./platform/" init -no-color 
+          terraform -chdir="./platform/" destroy -auto-approve -no-color -var-file $PLATFORM_VAR_FILE
+        else
+          echo "Variables files not found!"  ./platform/${PLATFORM_VAR_FILE} "or" ./workloads/${WORKLOADS_VAR_FILE}
+        fi
+      else
+        echo "Variables PLATFORM_VAR_FILE or WORKLOADS_VAR_FILE are missing."
+      fi
+serviceAccount: 'projects/$PROJECT_ID/serviceAccounts/aiongke@$PROJECT_ID.iam.gserviceaccount.com'
+options:
+  logging: CLOUD_LOGGING_ONLY
+  dynamicSubstitutions: true
+  substitutionOption: 'ALLOW_LOOSE'

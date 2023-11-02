@@ -18,6 +18,6 @@
 terraform.tfstate*
 .terraform*
 *code-workspace*
-*delete*
+*delete
 *factory*
 *scripts*
