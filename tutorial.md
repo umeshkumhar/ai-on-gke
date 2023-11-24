@@ -2,46 +2,53 @@
 
 Welcome to the Cloudshell tutorial for AI on GKE!
 
-This guide will show you how to prepare GKE cluster and install the AI applications on GKE. It'll also walk you through the files that needs your inputs and commands that will complete the tutorial.
+This guide will show you how to prepare a GKE cluster and install the AI applications on GKE. It'll also walk you through the configuration files that can be provided with custom inputs and commands that will complete the tutorial.
 
 **Time to complete**: About 30 minutes
 
-**Prerequisites**: A Cloud Billing account
+**Prerequisites**: GCP project linked with a Cloud Billing account
 
-Click the **START** button to move to the next step.
+To begin, click **Start**.
 
 ## What is AI-on-GKE
 
-The AI-on-GKE provides <<COMPLETE THIS>>
+This tutorial Terraform & Cloud Build to provision the infrastructure as well as deploy the workloads
 
+You'll be performing the following activities:
 
+1. Set project-id for gcloud CLI
+2. Update terraform variable values to create infrastructure
+3. Update terraform variable values to provide workload configuration
+4. Create a GCS bucket to store terraform state
+5. Configure service account to be used for deployment
+6. Submit Cloud build job to create infrastructure & deploy workloads
 
-Next, you'll provide inputs parameters and launch a AI-on-GKE tutorial.
+To get started, click **Next**.
 
 ## Step 0: Set your project
-To set your Cloud Platform project in this terminal session use:
+To set your Cloud Platform project for this terminal session use:
 ```bash
 gcloud config set project [PROJECT_ID]
 ```
-In this project, the tutorial resources will be created
+All the resources will be created in this project
 
 ## Step 1: Provide PLATFORM Inputs Parameters for Terraform
 
-Here on step 1 you need to update the PLATFORM terraform tfvars file (located in ./platform/platform.tfvars) to provide the input parameters to allow terraform code execution to provision GKE resource. Thise will include the inputs parameters in form of key value pairs. Update the values as per your requirements.
+Here on step 1 you need to update the PLATFORM terraform tfvars file (located in ./platform/platform.tfvars) to provide the input parameters to allow terraform code execution to provision GKE resources. This will include the input parameters in the form of key value pairs. Update the values as per your requirements.
 
 <walkthrough-editor-open-file filePath="./platform/platform.tfvars"> Open platform.tfvars 
 </walkthrough-editor-open-file>
 
 Update `project_id` and review the other default values.
 
-**Tip**: Click the highlighted text above to open the file on your cloudshell.
+**Tip**: Click the highlighted text above to open the file in your cloudshell editor.
 
 You can find tfvars examples in the tfvars_examples folder.
 
 
 ## Step 2: Provide APPLICATION Inputs Parameters for Terraform
 
-Here on step 1 you need to update the APPLICATION terraform tfvars file (located in ./workloads/workloads.tfvars) to provide the input parameters to allow terraform code execution to provision the APPLICATION WORKLOADS. Thise will include the inputs parameters in form of key value pairs. Update the values as per your requirements.
+Here on step 2 you need to update the APPLICATION terraform tfvars file (located in ./workloads/workloads.tfvars) to provide the input parameters to allow terraform code execution to provision the APPLICATION WORKLOADS. This will include the input parameters in the form of key value pairs. Update the values as per your requirements.
 
 <walkthrough-editor-open-file filePath="./workloads/workloads.tfvars"> Open workloads.tfvars
 </walkthrough-editor-open-file>
@@ -53,11 +60,11 @@ Update `project_id` and review the other default values.
 
 ## Step 3: [Optional] Configure Terraform GCS backend
 
-You can also configure the GCS bucket to persist the terraform state file for further usage. To configure the terraform backend you need to have GCS bucket already created.
+You can also configure the GCS bucket to persist the terraform state file for further usage. To configure the terraform backend you need to have a GCS bucket already created.
 This needs to be done both for PLATFORM and APPLICATION stages.
 
 ### [Optional] Create GCS Bucket 
-In case you dont have GCS bucket already, you can create using terraform or gcloud command as well. Refer below for gcloud command line to create new GCS bucket.
+In case you don't have a GCS bucket already, you can create using terraform or gcloud command as well. Refer below for the gcloud command line to create a new GCS bucket.
 ```bash
 gcloud storage buckets create gs://BUCKET_NAME
 ```
@@ -113,7 +120,7 @@ gcloud iam service-accounts create aiongke --display-name="AI on GKE Service Acc
 
 ## Step 5: Run Terraform Apply using Cloud Build
 
-You are ready to deploy your resources now! `cloudbuild.yaml` is already prepared with all the steps requires to deploy the application. 
+You are ready to deploy your resources now! `cloudbuild.yaml` is already prepared with all the steps required to deploy the application. 
 
 Run the below command to submit Cloud Build job to deploy the resources:
 
