@@ -1,5 +1,5 @@
 steps:
-- id: Execute Platform Provision using Terraform to provision GKE 
+- id: Provision Infra with Terraform
   name: gcr.io/cloudshell-images/cloudshell:latest
   env:
     - "PLATFORM_VAR_FILE=${_PLATFORM_VAR_FILE}"
@@ -12,7 +12,7 @@ steps:
       else
         echo " PLATFORM_VAR_FILE variable not found, skipping this step."
       fi
-- id: Update authorised networks for restricted public cluster
+- id: If restricted public cluster, update authorised networks 
   name: gcr.io/cloudshell-images/cloudshell:latest
   env:
     - "WORKLOADS_VAR_FILE=${_WORKLOADS_VAR_FILE}"
@@ -30,7 +30,7 @@ steps:
 
         if [[ $ISPRIVATE == "True" ]]
         then 
-          echo "GKE have private endpoint, consider enabling connect gateway!"
+          echo "GKE cluster has private endpoint, skipping this step. Consider using connect gateway!"
         else
           export EXISTING_AUTH_NETS=`gcloud container clusters describe $CLUSTERNAME --location $LOCATION --project $PROJECT --format "value[delimiter=','](masterAuthorizedNetworksConfig.cidrBlocks[].cidrBlock)"`
           echo "$SHELL_IP/32,$EXISTING_AUTH_NETS"
@@ -41,7 +41,7 @@ steps:
       else
         echo " WORKLOADS_VAR_FILE variable not found, skipping this step."
       fi
-- id: Deploy Workloads on provided platform GKE
+- id: Deploy Workloads to GKE cluster
   name: gcr.io/cloudshell-images/cloudshell:latest
   env:
     - "WORKLOADS_VAR_FILE=${_WORKLOADS_VAR_FILE}"
