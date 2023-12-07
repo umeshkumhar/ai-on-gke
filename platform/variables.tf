@@ -79,6 +79,14 @@ variable "cluster_name" {
   type = string
 }
 
+variable "cluster_labels" {
+  type        = map
+  description = "GKE cluster labels"
+  default     =  {
+    "cloud.google.com/gke-profile" = "ai-on-gke"
+  }
+}
+
 variable "kubernetes_version" {
   type    = string
   default = "latest"

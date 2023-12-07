@@ -20,8 +20,8 @@ project_id = "ai-on-gke-jss-sandbox"
 #######################################################
 ## network values
 create_network  = true
-network_name    = "ml-network-1"
-subnetwork_name = "subnet-02"
+network_name    = "ml-network"
+subnetwork_name = "ml-subnet"
 
 ## required only in case new network provisioning
 subnetwork_cidr           = "10.100.0.0/16"
@@ -29,7 +29,7 @@ subnetwork_region         = "us-central1"
 subnetwork_private_access = "true"
 subnetwork_description    = "GKE subnet"
 network_secondary_ranges = {
-  "subnet-02" = [
+  "ml-subnet" = [
     {
       range_name    = "us-central1-01-gke-01-pods-1"
       ip_cidr_range = "192.168.0.0/20"
@@ -44,8 +44,8 @@ network_secondary_ranges = {
 ## gke variables
 create_cluster                       = true
 private_cluster                      = true ## Default true. Use false for a public cluster
-autopilot_cluster                    = false ## provide flag to create standard or autopilot cluster
-cluster_name                         = "ml-cluster1"
+autopilot_cluster                    = false # false = standard cluster, true = autopilot cluster
+cluster_name                         = "ml-cluster"
 kubernetes_version                   = "1.27"
 cluster_regional                     = true
 cluster_region                       = "us-central1"
@@ -61,7 +61,7 @@ master_authorized_networks = [{
 ## Node configuration are ignored for autopilot clusters
 cpu_pools = [{
   name                   = "cpu-pool"
-  machine_type           = "n1-standard-16"
+  machine_type           = "n2-standard-8"
   node_locations         = "us-central1-b,us-central1-c"
   autoscaling            = true
   min_count              = 1
@@ -85,7 +85,7 @@ cpu_pools = [{
 enable_gpu = true
 gpu_pools = [{
   name                   = "gpu-pool"
-  machine_type           = "n1-standard-16"
+  machine_type           = "n1-standard-8"
   node_locations         = "us-central1-b,us-central1-c"
   autoscaling            = true
   min_count              = 1
@@ -143,6 +143,11 @@ all_node_pools_oauth_scopes = [
   "https://www.googleapis.com/auth/service.management.readonly",
   "https://www.googleapis.com/auth/servicecontrol",
 ]
+
+
+cluster_labels= {
+  "cloud.google.com/gke-profile" = "ai-on-gke"
+}
 
 all_node_pools_labels = {
   "cloud.google.com/gke-profile" = "ray"

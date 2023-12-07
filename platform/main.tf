@@ -60,6 +60,7 @@ module "public-gke-standard-cluster" {
   ## gke variables
   cluster_regional                     = var.cluster_regional
   cluster_name                         = var.cluster_name
+  cluster_labels                       = var.cluster_labels
   kubernetes_version                   = var.kubernetes_version
   cluster_region                       = var.cluster_region
   cluster_zones                        = var.cluster_zones
@@ -93,6 +94,7 @@ module "public-gke-autopilot-cluster" {
   ## gke variables
   cluster_regional           = var.cluster_regional
   cluster_name               = var.cluster_name
+  cluster_labels             = var.cluster_labels
   kubernetes_version         = var.kubernetes_version
   cluster_region             = var.cluster_region
   cluster_zones              = var.cluster_zones
@@ -114,6 +116,7 @@ module "private-gke-standard-cluster" {
   ## gke variables
   cluster_regional                     = var.cluster_regional
   cluster_name                         = var.cluster_name
+  cluster_labels                       = var.cluster_labels
   kubernetes_version                   = var.kubernetes_version
   cluster_region                       = var.cluster_region
   cluster_zones                        = var.cluster_zones
@@ -147,6 +150,7 @@ module "private-gke-autopilot-cluster" {
   ## gke variables
   cluster_regional           = var.cluster_regional
   cluster_name               = var.cluster_name
+  cluster_labels             = var.cluster_labels
   kubernetes_version         = var.kubernetes_version
   cluster_region             = var.cluster_region
   cluster_zones              = var.cluster_zones

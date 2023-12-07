@@ -18,6 +18,7 @@ module "gke" {
   project_id                 = var.project_id
   regional                   = var.cluster_regional
   name                       = var.cluster_name
+  cluster_resource_labels    = var.cluster_labels
   region                     = var.cluster_region
   kubernetes_version         = var.kubernetes_version
   zones                      = var.cluster_zones

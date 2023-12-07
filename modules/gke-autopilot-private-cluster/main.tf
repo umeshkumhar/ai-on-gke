@@ -13,18 +13,19 @@
 # limitations under the License.
 
 module "gke" {
-  source             = "terraform-google-modules/kubernetes-engine/google//modules/beta-autopilot-private-cluster"
-  version            = "28.0.0"
-  project_id         = var.project_id
-  regional           = var.cluster_regional
-  name               = var.cluster_name
-  kubernetes_version = var.kubernetes_version
-  region             = var.cluster_region
-  zones              = var.cluster_zones
-  network            = var.network_name
-  subnetwork         = var.subnetwork_name
-  ip_range_pods      = var.ip_range_pods
-  ip_range_services  = var.ip_range_services
+  source                  = "terraform-google-modules/kubernetes-engine/google//modules/beta-autopilot-private-cluster"
+  version                 = "28.0.0"
+  project_id              = var.project_id
+  regional                = var.cluster_regional
+  name                    = var.cluster_name
+  cluster_resource_labels = var.cluster_labels
+  kubernetes_version      = var.kubernetes_version
+  region                  = var.cluster_region
+  zones                   = var.cluster_zones
+  network                 = var.network_name
+  subnetwork              = var.subnetwork_name
+  ip_range_pods           = var.ip_range_pods
+  ip_range_services       = var.ip_range_services
   #cluster_resource_labels = { "mesh_id" : "proj-${data.google_project.project.number}" }
 
   horizontal_pod_autoscaling = true

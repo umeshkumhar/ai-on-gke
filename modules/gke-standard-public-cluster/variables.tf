@@ -42,6 +42,11 @@ variable "cluster_name" {
   type = string
 }
 
+variable "cluster_labels" {
+  type        = map
+  description = "GKE cluster labels"
+}
+
 variable "kubernetes_version" {
   type = string
 }
