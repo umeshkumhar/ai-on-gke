@@ -12,15 +12,28 @@
 # # See the License for the specific language governing permissions and
 # # limitations under the License.
 
-apiVersion: monitoring.googleapis.com/v1
-kind: PodMonitoring
-metadata:
-  name: ray-monitoring
-  namespace: ${namespace}
-spec:
-  selector:
-    matchLabels:
-      ray.io/is-ray-node: "yes"
-  endpoints:
-  - port: metrics
-    interval: 30s
+variable "project_id" {
+  type        = string
+  description = "GCP project id"
+  default     = "umeshkumhar"
+}
+
+variable "cluster_name" {
+  type = string
+}
+
+variable "cluster_location" {
+  type = string
+}
+
+variable "jupyterhub_version" {
+  type        = string
+  default = "v1.1.1"
+}
+
+variable "jupyterhub_namespace" {
+  type        = string
+  description = "Jupyterub Namesapce of GKE"
+  # default = myray
+}
+
