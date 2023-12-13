@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 ##common variables  
 ## Need to pull this variables from tf output from previous platform stage
 project_id = "ai-on-gke-jss-sandbox"
@@ -21,7 +20,7 @@ region     = "us-central1"
 ## this is required for terraform to connect to GKE master and deploy workloads
 cluster_name     = "ml-cluster1"
 cluster_location = "us-central1"
-enable_autopilot = false # If false, creates GKE standard cluster # Needed to install or not nvidia driver # If = true, functionality not created yet.
+enable_autopilot = true # If false, creates GKE standard cluster # Needed to install or not nvidia driver # If = true, functionality not created yet.
 # If private cluster used will use connect gateway to connect GKE master
 private_cluster       = true
 cluster_membership_id = "ml-cluster1-us-central1" # Used for private cluster only
@@ -32,7 +31,7 @@ cluster_membership_id = "ml-cluster1-us-central1" # Used for private cluster onl
 
 ## GKE environment variables
 ray_namespace   = "myray"
-service_account = "myray-system-account"
+service_account = "myray-system-account7"
 enable_tpu      = false
 
 ## Ray variables
@@ -48,3 +47,5 @@ jupyterhub_namespace        = "myray" # If create_jupyterhub_namespace = false, 
 create_triton           = false    # Default = false, creates Triton
 create_triton_namespace = true     # Default = true, uses default triton namespace "triton". 
 triton_namespace        = "triton" # If create_triton_namespace = false, then keep this same as namespace (from GKE variables)
+
+

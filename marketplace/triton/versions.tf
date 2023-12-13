@@ -12,6 +12,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-output "cluster" {
-  value = module.gke
+terraform {
+  required_providers {
+    google = {
+      source = "hashicorp/google"
+    }
+    google-beta = {
+      source  = "hashicorp/google-beta"
+      version = "~> 4.8"
+    }
+    helm = {
+      source  = "hashicorp/helm"
+      version = "~> 2.8.0"
+    }
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = "2.18.1"
+    }
+    # kubectl = {
+    #   source  = "alekc/kubectl"
+    #   version = "2.0.3"
+    # }
+  }
 }

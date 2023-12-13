@@ -18,7 +18,6 @@ data "http" "nvidia_driver_installer_manifest" {
 }
 
 
-
 resource "kubernetes_manifest" "nvidia_driver_installer" {
   manifest = yamldecode(data.http.nvidia_driver_installer_manifest.response_body)
   count     = var.enable_tpu || var.enable_autopilot ? 0 : 1

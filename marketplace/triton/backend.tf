@@ -12,14 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-output "project_id" {
-  value = var.project_id
-}
-
-output "cluster_name" {
-  value = var.cluster_name
-}
-
-output "cluster_region" {
-  value = var.cluster_region
-}
+# terraform {
+#   backend "gcs" {
+#     bucket = "BUCKET_NAME"
+#     prefix = "terraform/state/workloads"
+#   }
+# }
