@@ -15,37 +15,27 @@
 variable "project_id" {
   type        = string
   description = "GCP project id"
-  default     = "<your project>"
 }
 
 variable "namespace" {
   type        = string
   description = "Kubernetes namespace where resources are deployed"
-  default     = "triton"
 }
 
 variable "create_namespace" {
   type        = bool
   description = "Whether to create the Kubernetes namespace where resources are deployed"
-  default     = true
+  default     = false
 }
 
-variable "helm_release_name" {
+variable "name" {
   type        = string
-  description = "The name of the helm release to use for the installation"
   default     = "triton-inference-server"
-}
-
-variable "random_id_byte_length" {
-  type        = number
-  description = "The length of the random id byte length"
-  default     = 8
 }
 
 variable "service_account" {
   type        = string
   description = "Google Cloud IAM service account for authenticating with GCP services"
-  default     = "<your user name>-system-account"
 }
 
 variable "temporary_work_dir" {
@@ -59,7 +49,6 @@ variable "model_repository_folder_name" {
   description = "Name for the sample model data folder"
   default     = "model_repository"
 }
-
 
 variable "bucket_name" {
   type        = string

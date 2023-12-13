@@ -15,7 +15,6 @@
 variable "project_id" {
   type        = string
   description = "GCP project id"
-  default     = "umeshkumhar"
 }
 
 variable "cluster_name" {
@@ -27,7 +26,7 @@ variable "cluster_location" {
 }
 
 variable "triton_version" {
-  type        = string
+  type    = string
   default = "v1.1.1"
 }
 
@@ -40,13 +39,12 @@ variable "triton_namespace" {
 variable "service_account" {
   type        = string
   description = "Google Cloud IAM service account for authenticating with GCP services"
-  default     = "<your user name>-system-account"
+  default     = "triton-service-account"
 }
 
 variable "bucket_name" {
   type        = string
   description = "Bucket name with absolute path for sample model data"
-  default     = "bucket"
 }
 
 variable "bucket_location" {

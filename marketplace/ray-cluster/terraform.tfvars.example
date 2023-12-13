@@ -12,14 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-variable "namespace" {
-  type        = string
-  description = "Kubernetes namespace where resources are deployed"
-  default     = "<your-user-name>"
-}
+##common variables  
+## Need to pull this variables from tf output from previous platform stage
+project_id = "ai-on-gke-jss-sandbox"
 
-variable "create_namespace" {
-  type        = bool
-  description = "Enable creation of jupyterhub namespace if it does not exist"
-  default     = false
-}
+## this is required for terraform to connect to GKE master and deploy workloads
+cluster_name     = "ml-cluster1"
+cluster_location = "us-central1"
+
+#######################################################
+####    APPLICATIONS
+#######################################################
+
+## GKE environment variables
+ray_namespace   = "myray"
+service_account = "myray-system-account7"
+support_tpu      = false
+
+

@@ -108,3 +108,74 @@ The use of the assets contained in this repository is subject to compliance with
 ## Licensing
 
 * See [LICENSE](/LICENSE)
+
+
+
+## Test Commands for Autopush
+DEPLOYMENT_ID=triton
+curl \
+    -X POST \
+    -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+    -H "Content-Type: application/json" \
+    "https://autopush-config.sandbox.googleapis.com/v1alpha2/projects/ai-on-gke-jss-sandbox/locations/us-central1/deployments/deployment_id=${DEPLOYMENT_ID}" \
+    --data '{
+      "service_account": "projects/ai-on-gke-jss-sandbox/serviceAccounts/aiongke@ai-on-gke-jss-sandbox.iam.gserviceaccount.com",
+      "terraform_blueprint": {
+        "gcs_source": "gs://ai-on-gke-jss-sandbox/triton",
+        "input_values": {
+         "project_id": {
+          "input_value": "ai-on-gke-jss-sandbox"
+         },
+         "cluster_name": {
+          "input_value": "ml-cluster1"
+         },
+         "cluster_location": {
+          "input_value": "us-central1"
+         },
+         "goog_cm_deployment_name": {
+          "input_value": "triton-helm"
+         },
+        }
+      }
+    }'
+
+
+DEPLOYMENT_ID=jupyterhub
+curl \
+    -X DELETE \
+    -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+    -H "Content-Type: application/json" \
+    "https://autopush-config.sandbox.googleapis.com/v1alpha2/projects/ai-on-gke-jss-sandbox/locations/us-central1/deployments/${DEPLOYMENT_ID}?force=true"
+
+
+
+
+DEPLOYMENT_ID=triton
+curl \
+    -X PATCH \
+    -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+    -H "Content-Type: application/json" \
+    "https://autopush-config.sandbox.googleapis.com/v1alpha2/projects/ai-on-gke-jss-sandbox/locations/us-central1/deployments/${DEPLOYMENT_ID}" \
+    --data '{
+      "service_account": "projects/ai-on-gke-jss-sandbox/serviceAccounts/aiongke@ai-on-gke-jss-sandbox.iam.gserviceaccount.com",
+      "terraform_blueprint": {
+        "gcs_source": "gs://ai-on-gke-jss-sandbox/triton",
+        "input_values": {
+         "project_id": {
+          "input_value": "ai-on-gke-jss-sandbox"
+         },
+         "bucket_name": {
+          "input_value": "ai-on-gke-jss-sandbox"
+         },
+         "cluster_name": {
+          "input_value": "ml-cluster1"
+         },
+         "cluster_location": {
+          "input_value": "us-central1"
+         },
+         "goog_cm_deployment_name": {
+          "input_value": "triton-helm"
+         },
+        }
+      }
+    }'

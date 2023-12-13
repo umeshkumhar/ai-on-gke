@@ -43,3 +43,12 @@ variable "service_account" {
   default     = "myray-system-account"
 }
 
+variable "create_ray_cluster" {
+  type        = bool
+  default     = false
+}
+
+variable "support_tpu" {
+  type        = bool
+  default     = false
+}

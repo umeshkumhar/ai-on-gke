@@ -12,8 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-resource "helm_release" "kuberay-operator" {
-  name       = "kuberay-operator"
-  repository = "https://ray-project.github.io/kuberay-helm/"
-  chart      = "kuberay-operator"
+variable "name" {
+  type        = string
+  default     = "kuberay-operator"
+}
+
+variable "namespace" {
+  type        = string
+  description = "Kubernetes namespace where resources are deployed"
+}
+
+variable "create_namespace" {
+  type        = bool
+  default     = false
 }

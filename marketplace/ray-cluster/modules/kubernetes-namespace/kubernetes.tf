@@ -16,11 +16,6 @@
 #   filename = "${path.module}/config/fluentd_config.yaml"
 # }
 
-resource "kubernetes_namespace" "ml" {
-  metadata {
-    name = var.namespace
-  }
-}
 
 # resource "kubectl_manifest" "fluentd_config" {
 #   override_namespace = var.namespace
@@ -30,6 +25,5 @@ resource "kubernetes_namespace" "ml" {
 resource "kubernetes_manifest" "manifests" {
   for_each = fileset("${path.module}/config/", "*.yaml")
   manifest = yamldecode(templatefile("${path.module}/config/${each.value}", { namespace: var.namespace}))
-  depends_on = [kubernetes_namespace.ml]
 }
 
