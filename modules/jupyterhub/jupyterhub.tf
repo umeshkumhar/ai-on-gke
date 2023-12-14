@@ -12,30 +12,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# provider "kubernetes" {
-#   config_path = pathexpand("~/.kube/config")
-# }
 
-# provider "kubectl" {
-#   config_path = pathexpand("~/.kube/config")
-# }
+locals {
+  config_values_file = yamldecode(templatefile("${path.module}/jupyter_config/config.yaml", { password : random_password.generated_password.result }))
+}
 
-# provider "helm" {
-#   kubernetes {
-#     config_path = pathexpand("~/.kube/config")
-#   }
-# }
+resource "random_password" "generated_password" {
+  length  = 10
+  special = true
+}
 
 resource "helm_release" "jupyterhub" {
-  name             = "jupyterhub"
+  name             = var.name
   repository       = "https://jupyterhub.github.io/helm-chart"
   chart            = "jupyterhub"
+  version          = var.version
   namespace        = var.namespace
   create_namespace = var.create_namespace
   cleanup_on_fail  = "true"
-
   values = [
-    file("${path.module}/jupyter_config/config.yaml")
+    locals.config_values_file
   ]
 }
 

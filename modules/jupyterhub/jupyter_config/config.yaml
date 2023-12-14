@@ -18,7 +18,7 @@ hub:
         - user4
     # ...
     DummyAuthenticator:
-      password: password
+      password: ${password}
     JupyterHub:
       authenticator_class: dummy
   networkPolicy:

@@ -12,10 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+variable "name" {
+  type        = string
+  default     = "jupyterhub"
+}
+
+variable "version" {
+  type        = string
+}
+
 variable "namespace" {
   type        = string
   description = "Kubernetes namespace where resources are deployed"
-  default     = "<your-user-name>"
 }
 
 variable "create_namespace" {
