@@ -25,6 +25,6 @@ cluster_location = "us-central1"
 
 ## JupyterHub variables
 goog_cm_deployment_name = "test"
-jupyterhub_version   = "v1.1.1"
+jupyterhub_version   = "3.2.1"
 jupyterhub_namespace = "jupyterhub" 
 

@@ -70,6 +70,7 @@ data "kubernetes_all_namespaces" "allns" {}
 module "jupyterhub" {
   source           = "./modules/jupyterhub"
   name             = var.goog_cm_deployment_name
+  app_version      = var.jupyterhub_version
   create_namespace = !contains(data.kubernetes_all_namespaces.allns.namespaces, var.jupyterhub_namespace)
   namespace        = var.jupyterhub_namespace
 }

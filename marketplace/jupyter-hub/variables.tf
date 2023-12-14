@@ -32,13 +32,13 @@ variable "cluster_location" {
 }
 
 variable "jupyterhub_version" {
-  type        = string
-  default = "v1.1.1"
+  type    = string
+  default = "latest"
 }
 
 variable "jupyterhub_namespace" {
   type        = string
   description = "Jupyterub Namesapce of GKE"
-  default = "jupyterhub"
+  default     = "jupyterhub"
 }
 

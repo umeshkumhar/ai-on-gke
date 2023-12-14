@@ -17,6 +17,10 @@ variable "name" {
   default     = "jupyterhub"
 }
 
+variable "app_version" {
+  type        = string
+}
+
 variable "namespace" {
   type        = string
   description = "Kubernetes namespace where resources are deployed"
