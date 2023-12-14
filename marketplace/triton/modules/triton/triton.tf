@@ -14,7 +14,7 @@
 
 
 resource "random_id" "bucket_id" {
-  byte_length = var.random_id_byte_length
+  byte_length = 2
 }
 
 resource "google_storage_bucket" "bucket" {
@@ -28,7 +28,6 @@ module "k8s_service_accounts" {
   project_id      = var.project_id
   namespace       = var.namespace
   service_account = var.service_account
-  # depends_on      = [module.kubernetes-namespace]
 }
 
 resource "google_storage_bucket_iam_binding" "bucket-iam-binding" {
@@ -62,7 +61,7 @@ resource "null_resource" "upload_folder" {
 
 resource "helm_release" "triton-inference-server" {
   depends_on       = [null_resource.upload_folder, google_storage_bucket_iam_binding.bucket-iam-binding]
-  name             = var.helm_release_name
+  name             = var.name
   namespace        = var.namespace
   create_namespace = var.create_namespace
   chart            = "./gcp_helm_chart"

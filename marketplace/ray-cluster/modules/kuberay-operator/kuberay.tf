@@ -12,13 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-data "http" "nvidia_driver_installer_manifest" {
-  # url = "https://raw.githubusercontent.com/GoogleCloudPlatform/container-engine-accelerators/master/nvidia-driver-installer/cos/daemonset-preloaded.yaml"
-  url = "https://raw.githubusercontent.com/GoogleCloudPlatform/container-engine-accelerators/master/nvidia-driver-installer/cos/daemonset-preloaded-latest.yaml"
-}
-
-
-resource "kubernetes_manifest" "nvidia_driver_installer" {
-  manifest = yamldecode(data.http.nvidia_driver_installer_manifest.response_body)
-  count     = var.enable_tpu || var.enable_autopilot ? 0 : 1
+resource "helm_release" "kuberay-operator" {
+  name            = var.name
+  repository      = "https://ray-project.github.io/kuberay-helm/"
+  chart           = "kuberay-operator"
+  namespace       = var.namespace
+  cleanup_on_fail = "true"
+  create_namespace = var.create_namespace
 }

@@ -12,22 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-terraform {
-  required_providers {
-    google = {
-      source = "hashicorp/google"
-    }
-    google-beta = {
-      source  = "hashicorp/google-beta"
-      version = "~> 4.8"
-    }
-    helm = {
-      source  = "hashicorp/helm"
-      version = "~> 2.8.0"
-    }
-    kubernetes = {
-      source  = "hashicorp/kubernetes"
-      version = "2.18.1"
-    }
-  }
+variable "project_id" {
+  type        = string
+  description = "GCP project id"
+}
+
+variable "namespace" {
+  type        = string
+  description = "Kubernetes namespace where resources are deployed"
+}
+
+variable "service_account" {
+  type        = string
+  description = "Google Cloud IAM service account for authenticating with GCP services"
+  default     = "ray-system-account"
 }

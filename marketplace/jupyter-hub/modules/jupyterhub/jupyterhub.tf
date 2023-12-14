@@ -27,7 +27,7 @@
 # }
 
 resource "helm_release" "jupyterhub" {
-  name             = "jupyterhub"
+  name             = var.name
   repository       = "https://jupyterhub.github.io/helm-chart"
   chart            = "jupyterhub"
   namespace        = var.namespace

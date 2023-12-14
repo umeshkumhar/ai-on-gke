@@ -15,7 +15,12 @@
 variable "project_id" {
   type        = string
   description = "GCP project id"
-  default     = "umeshkumhar"
+}
+
+// Marketplace requires this variable name to be declared
+variable "goog_cm_deployment_name" {
+  description = "The name of the deployment"
+  type        = string
 }
 
 variable "cluster_name" {
@@ -34,6 +39,6 @@ variable "jupyterhub_version" {
 variable "jupyterhub_namespace" {
   type        = string
   description = "Jupyterub Namesapce of GKE"
-  # default = myray
+  default = "jupyterhub"
 }
 
